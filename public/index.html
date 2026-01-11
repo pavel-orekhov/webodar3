@@ -43,6 +43,39 @@
     </section>
 
     <section>
+      <h2>PlantUML Encoder Tool</h2>
+      <p>
+        This MCP server includes a <strong>PlantUML Encoder</strong> tool that allows you to encode PlantUML diagrams into shareable URLs for plantuml.com. The tool compresses PlantUML code and generates a URL that can be used to view the diagram.
+      </p>
+      
+      <h3>How it works</h3>
+      <p>The tool takes PlantUML diagram code and encodes it using deflate compression and custom alphabet mapping, then generates a shareable URL.</p>
+      
+      <h3>Example usage</h3>
+      <p>Input PlantUML code:</p>
+      <pre><code>Alice -> Bob: Hello
+Bob -> Alice: Hi</code></pre>
+      
+      <p>The tool will encode this to a URL like:</p>
+      <pre><code>https://www.plantuml.com/plantuml/svg/Syp9J4vLqBLJSCfFibBmICt9oUTooay2YJY2fAmKF381</code></pre>
+      
+      <p>You can visit this URL to see your PlantUML diagram rendered as SVG.</p>
+      
+      <h3>Tool parameters</h3>
+      <ul>
+        <li><code>plantumlCode</code> (string): PlantUML diagram code to encode (max 50KB)</li>
+      </ul>
+      
+      <h3>Error handling</h3>
+      <p>The tool validates input and returns appropriate error codes:</p>
+      <ul>
+        <li><code>EMPTY_CODE</code>: PlantUML code is required and cannot be empty</li>
+        <li><code>CODE_TOO_LARGE</code>: PlantUML code exceeds maximum size of 50KB</li>
+        <li><code>ENCODING_FAILED</code>: Failed to encode PlantUML diagram</li>
+      </ul>
+    </section>
+
+    <section>
       <h2>Try out this example</h2>
 
       <h3>Using an MCP Client</h3>

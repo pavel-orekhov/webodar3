@@ -1,0 +1,21 @@
+⬥ Injecting environment variable values for all scopes
+⬥ No app server detected. Using simple static server
+⬥ Running static server from "project/public"
+⬥ Setting up local dev server
+
+⬥ Static server listening to 3999
+⠋ Setting up the Edge Functions environment. This may take a couple of minutes.
+
+   ╭─────────────────────── ⬥  ────────────────────────╮
+   │                                                   │
+   │   Local dev server ready: http://localhost:8888   │
+   │                                                   │
+   ╰───────────────────────────────────────────────────╯
+
+⬥ Loaded function express-mcp-server
+⬥ Rewrote URL to /.netlify/functions/express-mcp-server
+Request from ::ffff:127.0.0.1: POST /.netlify/functions/express-mcp-server
+Received POST MCP request {
+  body: <Buffer 7b 22 6a 73 6f 6e 72 70 63 22 3a 20 22 32 2e 30 22 2c 20 22 69 64 22 3a 20 31 2c 20 22 6d 65 74 68 6f 64 22 3a 20 22 69 6e 69 74 69 61 6c 69 7a 65 22 ... 118 more bytes>
+}
+Response with status 406 in 77 ms.

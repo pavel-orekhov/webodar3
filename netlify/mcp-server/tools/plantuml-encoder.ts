@@ -2,26 +2,21 @@ import * as zlib from 'zlib';
 import { z } from 'zod';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
+import plantumlEncoder from 'plantuml-encoder';
 
 // Константы алфавитов - точно как в исходном коде
 const PLANTUML_ALPHABET = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_';
 const BASE64_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
-// Функция encodePlantUML - точно как в исходном коде
+// Функция encodePlantUML - используем проверенную библиотеку
 export function encodePlantUML(plantumlCode: string): string {
-  const deflated = zlib.deflateRawSync(Buffer.from(plantumlCode, 'utf8'), { level: 9 });
-  const base64 = deflated.toString('base64');
-  
-  let encoded = '';
-  for (let i = 0; i < base64.length; i++) {
-    const char = base64[i];
-    const index = BASE64_ALPHABET.indexOf(char);
-    if (index !== -1) {
-      encoded += PLANTUML_ALPHABET[index];
-    }
+  // Обрезаем @startuml и @enduml если они есть для совместимости
+  let code = plantumlCode.trim();
+  if (code.startsWith('@startuml')) {
+    code = code.replace(/^@startuml\n?/, '').replace(/\n?@enduml$/, '');
   }
   
-  return encoded;
+  return plantumlEncoder.encode(code);
 }
 
 // Функция validatePlantUMLCode - точно как в исходном коде

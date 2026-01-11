@@ -24,6 +24,68 @@ Importantly, because of how Express handles mapping routes, ensure you set the `
   to = "/.netlify/functions/express-mcp-server"
 ```
 
+## Available MCP Tools
+
+### PlantUML Encoder Tool
+
+This MCP server includes a **PlantUML Encoder** tool that allows you to encode PlantUML diagrams into shareable URLs for plantuml.com.
+
+#### What it does
+Encodes PlantUML diagram code into a compressed URL that can be viewed on plantuml.com
+
+#### Parameters
+- `plantumlCode` (string): PlantUML diagram code to encode (max 50KB)
+
+#### Response format
+On success:
+```json
+{
+  "status": "success",
+  "url": "https://www.plantuml.com/plantuml/svg/[encoded]",
+  "encoded": "[encoded_string]",
+  "format": "svg"
+}
+```
+
+On error:
+```json
+{
+  "status": "error",
+  "code": "ERROR_CODE",
+  "message": "error_description"
+}
+```
+
+#### Error codes
+- `EMPTY_CODE`: PlantUML code is required and cannot be empty
+- `CODE_TOO_LARGE`: PlantUML code exceeds maximum size of 50KB
+- `ENCODING_FAILED`: Failed to encode PlantUML diagram
+
+#### Example usage via MCP client
+
+```json
+{
+  "tool": "encode-plantuml",
+  "arguments": {
+    "plantumlCode": "A -> B: Hello\\nB -> A: Hi"
+  }
+}
+```
+
+Example response:
+```json
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"status\":\"success\",\"url\":\"https://www.plantuml.com/plantuml/svg/Syp9J4vLqBLJSCfFibBmICt9oUTooay2YJY2fAmKF381\",\"encoded\":\"Syp9J4vLqBLJSCfFibBmICt9oUTooay2YJY2fAmKF381\",\"format\":\"svg\"}"
+    }
+  ]
+}
+```
+
+You can then visit the URL to see your PlantUML diagram rendered as SVG.
+
 ## Install and run locally
 
 ```shell
