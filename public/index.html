@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Netlify example: Serverless functions</title>
-  <meta name="description" content="A 'hello world' example of using Netlify Functions to add serverless functions to your web project.">
+  <title>webodar3</title>
+  <meta name="description" content="webodar3 is a serverless Model Context Protocol (MCP) server running on Netlify Functions (Express).">
   <link rel="preload" href="https://example-styles.netlify.app/fonts/PacaembuVar-latin.woff2" as="font" type="font/woff2" />
   <link rel="preload" href="https://example-styles.netlify.app/fonts/MulishVar-latin.woff2" as="font" type="font/woff2" />
   <link rel="stylesheet" href="https://example-styles.netlify.app/styles.css">
@@ -18,7 +18,7 @@
       </a>
     </nav>
     <section>
-      <h1>MCP with Express</h1>
+      <h1>webodar3</h1>
       <p>
           A starter example for using <a href="https://expressjs.com/">Express</a> with Netlify to add serverless MCP to your project.
       </p>
@@ -49,11 +49,11 @@
       <p>Provide the following configuration to your MCP client. After connecting, you will see the tools, prompts, resources, etc. available to the agent.</p>
       <pre><code>{
   "mcpServers": {
-    "express-mcp": {
+    "webodar3": {
       "command": "npx",
       "args": [
         "mcp-remote@next",
-        "https://mcp-example-express.netlify.app/mcp"
+        "https://webodar3.netlify.app/mcp"
       ]
     }
   }
@@ -61,23 +61,10 @@
 
       <h3>Using the MCP Inspector</h3>
       <p>MCP comes with an <a href="https://github.com/modelcontextprotocol/inspector">inspector tool</a> for testing the server locally or remotely. Run the following command in your terminal to use the inspector. After connecting, you will see the tools, prompts, resources, etc. available to the agent.</p>
-      <pre><code>npx @modelcontextprotocol/inspector npx mcp-remote@next https://mcp-example-express.netlify.app/mcp</code></pre>
+      <pre><code>npx @modelcontextprotocol/inspector npx mcp-remote@next https://webodar3.netlify.app/mcp</code></pre>
 
     </section>
 
-    <hr>
-    <section>
-      <h2>Deploy your own</h2>
-      <p>
-        A great place to start is to clone and deploy your own copy of this example. You can do that by clicking the button below.
-      </p>
-      <p>
-        <a href="https://app.netlify.com/start/deploy?repository=https://github.com/netlify/examples/&create_from_path=examples/mcp/express-mcp&utm_campaign=dx-examples"><img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify"></a>
-      </p>
-
-      <p><small>Clicking the button will clone <a href="https://github.com/netlify/examples/tree/main/examples/mcp/express-mcp">this example</a> from <a href="https://github.com/netlify/examples">the examples repo</a> and deploy it as a new site on <a href="https://netlify.com/?utm_campaign=dx-examples">Netlify</a></small></p>
-
-    </section>
     <hr>
     <section>
       <h2>More information</h2>
