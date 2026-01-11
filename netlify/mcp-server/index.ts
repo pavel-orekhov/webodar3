@@ -5,6 +5,7 @@ import {
   GetPromptResult,
   ReadResourceResult,
 } from "@modelcontextprotocol/sdk/types.js";
+import { registerPlantUMLEncoderTool } from "./tools/plantuml-encoder";
 
 
 export const setupMCPServer = (): McpServer => {
@@ -91,6 +92,9 @@ export const setupMCPServer = (): McpServer => {
       };
     }
   );
+
+  // Register PlantUML encoder tool
+  registerPlantUMLEncoderTool(server);
 
   // Create a resource that can be fetched by the client through
   // this MCP server.

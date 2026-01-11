@@ -43,6 +43,23 @@
     </section>
 
     <section>
+      <h2>PlantUML Encoder Tool</h2>
+      <p>
+        The server includes a <code>encode-plantuml</code> tool that allows you to encode PlantUML diagram code into a URL-friendly format. This is useful for generating links to diagram images hosted on the PlantUML server.
+      </p>
+      <h3>Example Tool Call</h3>
+      <pre><code>{
+  "name": "encode-plantuml",
+  "arguments": {
+    "plantumlCode": "@startuml\nAlice -> Bob: Authentication Request\nBob --> Alice: Authentication Response\n@enduml"
+  }
+}</code></pre>
+      <p>
+        For more information on PlantUML syntax, visit the <a href="https://plantuml.com/" target="_blank">official PlantUML website</a>.
+      </p>
+    </section>
+
+    <section>
       <h2>Try out this example</h2>
 
       <h3>Using an MCP Client</h3>
