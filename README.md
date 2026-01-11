@@ -10,6 +10,13 @@
 
 webodar3 is a basic example of developing and running a serverless MCP server using Netlify Functions.
 
+### Features
+
+- **PlantUML Encoder Tool**: Encode PlantUML code into URL-friendly links using the `encode-plantuml` tool.
+- **Greeting Prompt**: A simple greeting prompt template.
+- **Notification Stream**: A tool to test resumable notification streams.
+- **Greeting Resource**: A static text resource.
+
 - [Model Context Protocol (MCP)](https://modelcontextprotocol.io/)
 - [Docs: Netlify Functions](https://docs.netlify.com/functions/overview/?utm_campaign=dx-examples&utm_source=example-site&utm_medium=web&utm_content=example-mcp-express)
 - [Agent Experience (AX)](https://agentexperience.ax?utm_source=express-mcp-guide&utm_medium=web&utm_content=example-mcp-express)
@@ -44,4 +51,23 @@ netlify dev
 
 # 6. While the site is running locally, open a separate terminal tab to run the MCP inspector or client you desire
 npx @modelcontextprotocol/inspector npx mcp-remote@next http://localhost:8888/mcp
+```
+
+## MCP Tools
+
+### `encode-plantuml`
+
+Encodes PlantUML diagrams into a URL-friendly format and returns a link to the diagram.
+
+**Parameters:**
+- `plantumlCode` (string): The PlantUML diagram code to encode.
+
+**Response:**
+```json
+{
+  "status": "success",
+  "url": "https://www.plantuml.com/plantuml/svg/...",
+  "encoded": "...",
+  "format": "svg"
+}
 ```
