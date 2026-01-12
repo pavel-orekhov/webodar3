@@ -1,38 +1,15 @@
 import assert from 'assert';
 import { encodePlantUML, validatePlantUMLCode } from '../netlify/mcp-server/tools/plantuml-encoder.js';
+import fs from 'fs';
+import path from 'path';
 
-// Test cases - с обертками @startuml и @enduml, корректные значения от библиотеки
-const testCases = [
-  {
-    code: "@startuml\nA -> B\n@enduml",
-    expected: "SrJGjLDm0W00",
-    name: "Test 1"
-  },
-  {
-    code: "@startuml\nAlice -> Bob: Hello\nBob -> Alice: Hi\n@enduml",
-    expected: "Syp9J4vLqBLJSCfFibBmICt9oUTooay2YJY2fAmKF381",
-    name: "Test 2"
-  },
-  {
-    code: "@startuml\n[*] --> State1\nState1 --> State2\n@enduml",
-    expected: "YzQALT3LjLC8BaaiIJNaWb084IC0",
-    name: "Test 3"
-  },
-  {
-    code: "@startuml\nclass User {\n    name: String\n  email: String\n}\n@enduml",
-    expected: "Iyv9B2vM22rEBLAevb9GK538IynDjL88BYdAp4ldKb18pKtCp87pQm40",
-    name: "Test 4"
-  },
-  {
-    code: "@startuml\nstart\n:action;\nstop\n@enduml",
-    expected: "Aov9B2hXiafCBidCpxFcAYx9Bm00",
-    name: "Test 5"
-  }
-];
+// Load test data
+const testDataPath = path.join(process.cwd(), 'tests', 'test_data.json');
+const testData = JSON.parse(fs.readFileSync(testDataPath, 'utf8'));
 
 // Acceptance tests - обязательные 5 тестов
 console.log('=== ACCEPTANCE TESTS ===');
-for (const testCase of testCases) {
+for (const testCase of testData.acceptance_tests) {
   try {
     const result = encodePlantUML(testCase.code);
     assert.strictEqual(result, testCase.expected, `${testCase.name}: Expected "${testCase.expected}", got "${result}"`);
@@ -45,39 +22,30 @@ for (const testCase of testCases) {
   }
 }
 
-// Дополнительные тесты
+// Validation tests
 console.log('\n=== VALIDATION TESTS ===');
+for (const testCase of testData.validation_tests) {
+  let input = testCase.code;
+  if (testCase.name === "Large code") {
+    input = "a".repeat(50 * 1024 + 1);
+  }
+  
+  let result;
+  if (testCase.name === "Null") {
+    result = validatePlantUMLCode(null as any);
+  } else if (testCase.name === "Undefined") {
+    result = validatePlantUMLCode(undefined as any);
+  } else {
+    result = validatePlantUMLCode(input);
+  }
+  
+  assert.strictEqual(result.valid, false);
+  assert.strictEqual(result.code, testCase.expected_error);
+  console.log(`✅ ${testCase.name}: PASS`);
+}
 
-// Test empty string
-const emptyResult = validatePlantUMLCode("");
-assert.strictEqual(emptyResult.valid, false);
-assert.strictEqual(emptyResult.code, "EMPTY_CODE");
-console.log("✅ Empty string validation: PASS");
-
-// Test null
-const nullResult = validatePlantUMLCode(null as any);
-assert.strictEqual(nullResult.valid, false);
-assert.strictEqual(nullResult.code, "EMPTY_CODE");
-console.log("✅ Null validation: PASS");
-
-// Test undefined
-const undefinedResult = validatePlantUMLCode(undefined as any);
-assert.strictEqual(undefinedResult.valid, false);
-assert.strictEqual(undefinedResult.code, "EMPTY_CODE");
-console.log("✅ Undefined validation: PASS");
-
-// Test whitespace-only
-const whitespaceResult = validatePlantUMLCode("   \n\t  ");
-assert.strictEqual(whitespaceResult.valid, false);
-assert.strictEqual(whitespaceResult.code, "EMPTY_CODE");
-console.log("✅ Whitespace-only validation: PASS");
-
-// Test code > 50KB
-const largeCode = "a".repeat(50 * 1024 + 1);
-const largeResult = validatePlantUMLCode(largeCode);
-assert.strictEqual(largeResult.valid, false);
-assert.strictEqual(largeResult.code, "CODE_TOO_LARGE");
-console.log("✅ Large code validation: PASS");
+// Additional tests
+console.log('\n=== ADDITIONAL TESTS ===');
 
 // Test exactly 50KB (should pass)
 const exactCode = "a".repeat(50 * 1024);

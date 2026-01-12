@@ -1,0 +1,180 @@
+⬥ Injecting environment variable values for all scopes
+⬥ No app server detected. Using simple static server
+⬥ Running static server from "project/public"
+⬥ Setting up local dev server
+
+⬥ Static server listening to 3999
+⠋ Setting up the Edge Functions environment. This may take a couple of minutes.
+
+   ╭─────────────────────── ⬥  ────────────────────────╮
+   │                                                   │
+   │   Local dev server ready: http://localhost:8888   │
+   │                                                   │
+   ╰───────────────────────────────────────────────────╯
+
+⬥ Loaded function express-mcp-server
+⬥ Rewrote URL to /.netlify/functions/express-mcp-server
+Request from ::ffff:127.0.0.1: POST /.netlify/functions/express-mcp-server
+Received POST MCP request {
+  body: <Buffer 7b 0a 20 20 20 20 22 6a 73 6f 6e 72 70 63 22 3a 20 22 32 2e 30 22 2c 0a 20 20 20 20 22 69 64 22 3a 20 31 2c 0a 20 20 20 20 22 6d 65 74 68 6f 64 22 3a ... 35 more bytes>
+}
+Request closed
+Response with status 200 in 90 ms.
+⬥ Rewrote URL to /.netlify/functions/express-mcp-server
+Request from ::ffff:127.0.0.1: POST /.netlify/functions/express-mcp-server
+Received POST MCP request {
+  body: <Buffer 7b 22 6a 73 6f 6e 72 70 63 22 3a 22 32 2e 30 22 2c 22 69 64 22 3a 31 37 36 38 31 37 37 35 38 32 36 32 34 2c 22 6d 65 74 68 6f 64 22 3a 22 74 6f 6f 6c ... 20 more bytes>
+}
+Request closed
+Response with status 200 in 10 ms.
+⬥ Rewrote URL to /.netlify/functions/express-mcp-server
+Request from ::ffff:127.0.0.1: POST /.netlify/functions/express-mcp-server
+Received POST MCP request {
+  body: <Buffer 7b 22 6a 73 6f 6e 72 70 63 22 3a 22 32 2e 30 22 2c 22 69 64 22 3a 31 37 36 38 31 37 37 35 38 32 36 36 36 2c 22 6d 65 74 68 6f 64 22 3a 22 74 6f 6f 6c ... 102 more bytes>
+}
+Request closed
+Response with status 200 in 7 ms.
+⬥ Rewrote URL to /.netlify/functions/express-mcp-server
+Request from ::ffff:127.0.0.1: POST /.netlify/functions/express-mcp-server
+Received POST MCP request {
+  body: <Buffer 7b 22 6a 73 6f 6e 72 70 63 22 3a 22 32 2e 30 22 2c 22 69 64 22 3a 31 37 36 38 31 37 37 35 38 32 36 39 35 2c 22 6d 65 74 68 6f 64 22 3a 22 74 6f 6f 6c ... 133 more bytes>
+}
+Request closed
+Response with status 200 in 5 ms.
+⬥ Rewrote URL to /.netlify/functions/express-mcp-server
+Request from ::ffff:127.0.0.1: POST /.netlify/functions/express-mcp-server
+Received POST MCP request {
+  body: <Buffer 7b 22 6a 73 6f 6e 72 70 63 22 3a 22 32 2e 30 22 2c 22 69 64 22 3a 31 37 36 38 31 37 37 35 38 32 37 32 35 2c 22 6d 65 74 68 6f 64 22 3a 22 74 6f 6f 6c ... 129 more bytes>
+}
+Request closed
+Response with status 200 in 5 ms.
+⬥ Rewrote URL to /.netlify/functions/express-mcp-server
+Request from ::ffff:127.0.0.1: POST /.netlify/functions/express-mcp-server
+Received POST MCP request {
+  body: <Buffer 7b 22 6a 73 6f 6e 72 70 63 22 3a 22 32 2e 30 22 2c 22 69 64 22 3a 31 37 36 38 31 37 37 35 38 32 37 38 39 2c 22 6d 65 74 68 6f 64 22 3a 22 74 6f 6f 6c ... 146 more bytes>
+}
+Request closed
+Response with status 200 in 8 ms.
+⬥ Rewrote URL to /.netlify/functions/express-mcp-server
+Request from ::ffff:127.0.0.1: POST /.netlify/functions/express-mcp-server
+Received POST MCP request {
+  body: <Buffer 7b 22 6a 73 6f 6e 72 70 63 22 3a 22 32 2e 30 22 2c 22 69 64 22 3a 31 37 36 38 31 37 37 35 38 32 38 31 32 2c 22 6d 65 74 68 6f 64 22 3a 22 74 6f 6f 6c ... 117 more bytes>
+}
+Request closed
+Response with status 200 in 6 ms.
+⬥ Rewrote URL to /.netlify/functions/express-mcp-server
+Request from ::ffff:127.0.0.1: POST /.netlify/functions/express-mcp-server
+Received POST MCP request {
+  body: <Buffer 7b 22 6a 73 6f 6e 72 70 63 22 3a 22 32 2e 30 22 2c 22 69 64 22 3a 31 37 36 38 31 37 37 35 38 32 38 33 32 2c 22 6d 65 74 68 6f 64 22 3a 22 74 6f 6f 6c ... 76 more bytes>
+}
+Validation error: EMPTY_CODE - plantumlCode is required and cannot be empty
+Request closed
+Response with status 200 in 10 ms.
+⬥ Rewrote URL to /.netlify/functions/express-mcp-server
+Request from ::ffff:127.0.0.1: POST /.netlify/functions/express-mcp-server
+Received POST MCP request {
+  body: <Buffer 7b 22 6a 73 6f 6e 72 70 63 22 3a 22 32 2e 30 22 2c 22 69 64 22 3a 31 37 36 38 31 37 37 35 38 32 38 39 30 2c 22 6d 65 74 68 6f 64 22 3a 22 74 6f 6f 6c ... 85 more bytes>
+}
+Validation error: EMPTY_CODE - plantumlCode is required and cannot be empty
+Request closed
+Response with status 200 in 7 ms.
+⬥ Rewrote URL to /.netlify/functions/express-mcp-server
+Request from ::ffff:127.0.0.1: POST /.netlify/functions/express-mcp-server
+Received POST MCP request {
+  body: <Buffer 7b 22 6a 73 6f 6e 72 70 63 22 3a 22 32 2e 30 22 2c 22 69 64 22 3a 31 37 36 38 31 37 37 35 38 32 39 32 32 2c 22 6d 65 74 68 6f 64 22 3a 22 74 6f 6f 6c ... 78 more bytes>
+}
+
+⬥ Function express-mcp-server has returned an error: Task timed out after 30.00 seconds
+    at new TimeoutError (/home/engine/.nvm/versions/node/v20.19.6/lib/node_modules/netlify-cli/node_modules/lambda-local/build/lib/utils.js:119:28)
+    at Context.<anonymous> (/home/engine/.nvm/versions/node/v20.19.6/lib/node_modules/netlify-cli/node_modules/lambda-local/build/lib/context.js:113:19)
+    at listOnTimeout (node:internal/timers:581:17)
+    at processTimers (node:internal/timers:519:7)
+
+Response with status 500 in 30009 ms.
+⬥ Rewrote URL to /.netlify/functions/express-mcp-server
+Request from ::ffff:127.0.0.1: POST /.netlify/functions/express-mcp-server
+Received POST MCP request {
+  body: <Buffer 7b 22 6a 73 6f 6e 72 70 63 22 3a 22 32 2e 30 22 2c 22 69 64 22 3a 31 37 36 38 31 37 37 36 31 32 39 35 33 2c 22 6d 65 74 68 6f 64 22 3a 22 74 6f 6f 6c ... 59 more bytes>
+}
+
+⬥ Function express-mcp-server has returned an error: Task timed out after 30.00 seconds
+    at new TimeoutError (/home/engine/.nvm/versions/node/v20.19.6/lib/node_modules/netlify-cli/node_modules/lambda-local/build/lib/utils.js:119:28)
+    at Context.<anonymous> (/home/engine/.nvm/versions/node/v20.19.6/lib/node_modules/netlify-cli/node_modules/lambda-local/build/lib/context.js:113:19)
+    at listOnTimeout (node:internal/timers:581:17)
+    at processTimers (node:internal/timers:519:7)
+
+Response with status 500 in 30006 ms.
+⬥ Rewrote URL to /.netlify/functions/express-mcp-server
+Request from ::ffff:127.0.0.1: POST /.netlify/functions/express-mcp-server
+Received POST MCP request {
+  body: <Buffer 7b 22 6a 73 6f 6e 72 70 63 22 3a 22 32 2e 30 22 2c 22 69 64 22 3a 31 37 36 38 31 37 37 36 34 32 39 37 36 2c 22 6d 65 74 68 6f 64 22 3a 22 74 6f 6f 6c ... 51277 more bytes>
+}
+Validation error: CODE_TOO_LARGE - PlantUML code exceeds maximum size of 50KB
+Request closed
+Response with status 200 in 6 ms.
+⬥ Rewrote URL to /.netlify/functions/express-mcp-server
+Request from ::ffff:127.0.0.1: POST /.netlify/functions/express-mcp-server
+Received POST MCP request {
+  body: <Buffer 7b 22 6a 73 6f 6e 72 70 63 22 3a 22 32 2e 30 22 2c 22 69 64 22 3a 31 37 36 38 31 37 37 37 36 32 32 39 35 2c 22 6d 65 74 68 6f 64 22 3a 22 74 6f 6f 6c ... 20 more bytes>
+}
+Request closed
+Response with status 200 in 15 ms.
+⬥ Rewrote URL to /.netlify/functions/express-mcp-server
+Request from ::ffff:127.0.0.1: POST /.netlify/functions/express-mcp-server
+Received POST MCP request {
+  body: <Buffer 7b 22 6a 73 6f 6e 72 70 63 22 3a 22 32 2e 30 22 2c 22 69 64 22 3a 31 37 36 38 31 37 37 37 36 32 33 33 38 2c 22 6d 65 74 68 6f 64 22 3a 22 74 6f 6f 6c ... 102 more bytes>
+}
+Request closed
+Response with status 200 in 7 ms.
+⬥ Rewrote URL to /.netlify/functions/express-mcp-server
+Request from ::ffff:127.0.0.1: POST /.netlify/functions/express-mcp-server
+Received POST MCP request {
+  body: <Buffer 7b 22 6a 73 6f 6e 72 70 63 22 3a 22 32 2e 30 22 2c 22 69 64 22 3a 31 37 36 38 31 37 37 37 36 32 33 38 35 2c 22 6d 65 74 68 6f 64 22 3a 22 74 6f 6f 6c ... 133 more bytes>
+}
+Request closed
+Response with status 200 in 5 ms.
+⬥ Rewrote URL to /.netlify/functions/express-mcp-server
+Request from ::ffff:127.0.0.1: POST /.netlify/functions/express-mcp-server
+Received POST MCP request {
+  body: <Buffer 7b 22 6a 73 6f 6e 72 70 63 22 3a 22 32 2e 30 22 2c 22 69 64 22 3a 31 37 36 38 31 37 37 37 36 32 34 32 32 2c 22 6d 65 74 68 6f 64 22 3a 22 74 6f 6f 6c ... 129 more bytes>
+}
+Request closed
+Response with status 200 in 7 ms.
+⬥ Rewrote URL to /.netlify/functions/express-mcp-server
+Request from ::ffff:127.0.0.1: POST /.netlify/functions/express-mcp-server
+Received POST MCP request {
+  body: <Buffer 7b 22 6a 73 6f 6e 72 70 63 22 3a 22 32 2e 30 22 2c 22 69 64 22 3a 31 37 36 38 31 37 37 37 36 32 34 37 38 2c 22 6d 65 74 68 6f 64 22 3a 22 74 6f 6f 6c ... 146 more bytes>
+}
+Request closed
+Response with status 200 in 8 ms.
+⬥ Rewrote URL to /.netlify/functions/express-mcp-server
+Request from ::ffff:127.0.0.1: POST /.netlify/functions/express-mcp-server
+Received POST MCP request {
+  body: <Buffer 7b 22 6a 73 6f 6e 72 70 63 22 3a 22 32 2e 30 22 2c 22 69 64 22 3a 31 37 36 38 31 37 37 37 36 32 34 39 39 2c 22 6d 65 74 68 6f 64 22 3a 22 74 6f 6f 6c ... 117 more bytes>
+}
+Request closed
+Response with status 200 in 7 ms.
+⬥ Rewrote URL to /.netlify/functions/express-mcp-server
+Request from ::ffff:127.0.0.1: POST /.netlify/functions/express-mcp-server
+Received POST MCP request {
+  body: <Buffer 7b 22 6a 73 6f 6e 72 70 63 22 3a 22 32 2e 30 22 2c 22 69 64 22 3a 31 37 36 38 31 37 37 37 36 32 35 31 38 2c 22 6d 65 74 68 6f 64 22 3a 22 74 6f 6f 6c ... 76 more bytes>
+}
+Validation error: EMPTY_CODE - plantumlCode is required and cannot be empty
+Request closed
+Response with status 200 in 4 ms.
+⬥ Rewrote URL to /.netlify/functions/express-mcp-server
+Request from ::ffff:127.0.0.1: POST /.netlify/functions/express-mcp-server
+Received POST MCP request {
+  body: <Buffer 7b 22 6a 73 6f 6e 72 70 63 22 3a 22 32 2e 30 22 2c 22 69 64 22 3a 31 37 36 38 31 37 37 37 36 32 35 34 31 2c 22 6d 65 74 68 6f 64 22 3a 22 74 6f 6f 6c ... 85 more bytes>
+}
+Validation error: EMPTY_CODE - plantumlCode is required and cannot be empty
+Request closed
+Response with status 200 in 14 ms.
+⬥ Rewrote URL to /.netlify/functions/express-mcp-server
+Request from ::ffff:127.0.0.1: POST /.netlify/functions/express-mcp-server
+Received POST MCP request {
+  body: <Buffer 7b 22 6a 73 6f 6e 72 70 63 22 3a 22 32 2e 30 22 2c 22 69 64 22 3a 31 37 36 38 31 37 37 37 36 32 35 37 31 2c 22 6d 65 74 68 6f 64 22 3a 22 74 6f 6f 6c ... 51277 more bytes>
+}
+Validation error: CODE_TOO_LARGE - PlantUML code exceeds maximum size of 50KB
+Request closed
+Response with status 200 in 5 ms.

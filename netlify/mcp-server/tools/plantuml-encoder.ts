@@ -1,12 +1,7 @@
-import * as zlib from 'zlib';
 import { z } from 'zod';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import plantumlEncoder from 'plantuml-encoder';
-
-// Константы алфавитов - точно как в исходном коде
-const PLANTUML_ALPHABET = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_';
-const BASE64_ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 // Функция encodePlantUML - используем проверенную библиотеку
 export function encodePlantUML(plantumlCode: string): string {
@@ -37,12 +32,6 @@ export function validatePlantUMLCode(plantumlCode: string): { valid: boolean; co
 
   return { valid: true };
 }
-
-// Zod schema для валидации
-const PlantUMLCodeSchema = z.string()
-  .min(1, 'plantumlCode is required and cannot be empty')
-  .refine(code => code.trim().length > 0, 'plantumlCode cannot be whitespace-only')
-  .refine(code => Buffer.byteLength(code, 'utf8') <= 50 * 1024, 'PlantUML code exceeds maximum size of 50KB');
 
 // Функция регистрации MCP tool
 export function registerPlantUMLEncoderTool(server: McpServer): void {

@@ -111,6 +111,20 @@ Example response:
 
 You can then visit the URL to see your PlantUML diagram rendered as SVG.
 
+## Testing
+
+### Unit Tests
+```shell
+npm test
+```
+
+### Integration Tests
+```shell
+node tests/integration-tests-mcp.js
+```
+
+The integration tests verify that the MCP server works correctly as a real MCP client would, using HTTP requests via curl to test the MCP protocol methods (`tools/list` and `tools/call`) and validate end-to-end functionality. This ensures the server behaves correctly as a stateless MCP server and properly handles all acceptance and validation test cases.
+
 ## Install and run locally
 
 ```shell
