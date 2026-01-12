@@ -20,6 +20,6 @@
         "tsx": "^4.21.0"
     },
     "scripts": {
-        "test": "tsx test/encode-plantuml.test.ts"
+        "test": "tsx tests/encode-plantuml.test.ts"
     }
 }
