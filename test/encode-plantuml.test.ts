@@ -1,30 +1,30 @@
 import assert from 'assert';
 import { encodePlantUML, validatePlantUMLCode } from '../netlify/mcp-server/tools/plantuml-encoder.js';
 
-// Test cases - обновленные с правильными значениями от проверенной библиотеки
+// Test cases - с обертками @startuml и @enduml, корректные значения от библиотеки
 const testCases = [
   {
-    code: "A -> B",
+    code: "@startuml\nA -> B\n@enduml",
     expected: "SrJGjLDm0W00",
     name: "Test 1"
   },
   {
-    code: "Alice -> Bob: Hello\nBob -> Alice: Hi",
+    code: "@startuml\nAlice -> Bob: Hello\nBob -> Alice: Hi\n@enduml",
     expected: "Syp9J4vLqBLJSCfFibBmICt9oUTooay2YJY2fAmKF381",
     name: "Test 2"
   },
   {
-    code: "[*] --> State1\nState1 --> State2",
+    code: "@startuml\n[*] --> State1\nState1 --> State2\n@enduml",
     expected: "YzQALT3LjLC8BaaiIJNaWb084IC0",
     name: "Test 3"
   },
   {
-    code: "class User {\n    name: String\n  email: String\n}",
+    code: "@startuml\nclass User {\n    name: String\n  email: String\n}\n@enduml",
     expected: "Iyv9B2vM22rEBLAevb9GK538IynDjL88BYdAp4ldKb18pKtCp87pQm40",
     name: "Test 4"
   },
   {
-    code: "start\n:action;\nstop",
+    code: "@startuml\nstart\n:action;\nstop\n@enduml",
     expected: "Aov9B2hXiafCBidCpxFcAYx9Bm00",
     name: "Test 5"
   }

@@ -36,14 +36,39 @@ Encodes PlantUML diagram code into a compressed URL that can be viewed on plantu
 #### Parameters
 - `plantumlCode` (string): PlantUML diagram code to encode (max 50KB)
 
-#### Response format
-On success:
+The tool accepts both formats:
+- Full PlantUML code with `@startuml` and `@enduml` wrappers
+- Raw diagram code without wrappers
+
+Example with wrappers:
 ```json
 {
-  "status": "success",
-  "url": "https://www.plantuml.com/plantuml/svg/[encoded]",
-  "encoded": "[encoded_string]",
-  "format": "svg"
+  "tool": "encode-plantuml",
+  "arguments": {
+    "plantumlCode": "@startuml\nA -> B: Hello\n@enduml"
+  }
+}
+```
+
+Example without wrappers:
+```json
+{
+  "tool": "encode-plantuml",
+  "arguments": {
+    "plantumlCode": "A -> B: Hello"
+  }
+}
+```
+
+Example response:
+```json
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"status\":\"success\",\"url\":\"https://www.plantuml.com/plantuml/svg/SrJGjLDm0W00\",\"encoded\":\"SrJGjLDm0W00\",\"format\":\"svg\"}"
+    }
+  ]
 }
 ```
 

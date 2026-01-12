@@ -13,7 +13,7 @@ export function encodePlantUML(plantumlCode: string): string {
   // Обрезаем @startuml и @enduml если они есть для совместимости
   let code = plantumlCode.trim();
   if (code.startsWith('@startuml')) {
-    code = code.replace(/^@startuml\n?/, '').replace(/\n?@enduml$/, '');
+    code = code.replace(/^@startuml\s*/, '').replace(/\s*@enduml\s*$/, '');
   }
   
   return plantumlEncoder.encode(code);
