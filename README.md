@@ -24,6 +24,107 @@ Importantly, because of how Express handles mapping routes, ensure you set the `
   to = "/.netlify/functions/express-mcp-server"
 ```
 
+## Available MCP Tools
+
+### PlantUML Encoder Tool
+
+This MCP server includes a **PlantUML Encoder** tool that allows you to encode PlantUML diagrams into shareable URLs for plantuml.com.
+
+#### What it does
+Encodes PlantUML diagram code into a compressed URL that can be viewed on plantuml.com
+
+#### Parameters
+- `plantumlCode` (string): PlantUML diagram code to encode (max 50KB)
+
+The tool accepts both formats:
+- Full PlantUML code with `@startuml` and `@enduml` wrappers
+- Raw diagram code without wrappers
+
+Example with wrappers:
+```json
+{
+  "tool": "encode-plantuml",
+  "arguments": {
+    "plantumlCode": "@startuml\nA -> B: Hello\n@enduml"
+  }
+}
+```
+
+Example without wrappers:
+```json
+{
+  "tool": "encode-plantuml",
+  "arguments": {
+    "plantumlCode": "A -> B: Hello"
+  }
+}
+```
+
+Example response:
+```json
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"status\":\"success\",\"url\":\"https://www.plantuml.com/plantuml/svg/SrJGjLDm0W00\",\"encoded\":\"SrJGjLDm0W00\",\"format\":\"svg\"}"
+    }
+  ]
+}
+```
+
+On error:
+```json
+{
+  "status": "error",
+  "code": "ERROR_CODE",
+  "message": "error_description"
+}
+```
+
+#### Error codes
+- `EMPTY_CODE`: PlantUML code is required and cannot be empty
+- `CODE_TOO_LARGE`: PlantUML code exceeds maximum size of 50KB
+- `ENCODING_FAILED`: Failed to encode PlantUML diagram
+
+#### Example usage via MCP client
+
+```json
+{
+  "tool": "encode-plantuml",
+  "arguments": {
+    "plantumlCode": "A -> B: Hello\\nB -> A: Hi"
+  }
+}
+```
+
+Example response:
+```json
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"status\":\"success\",\"url\":\"https://www.plantuml.com/plantuml/svg/Syp9J4vLqBLJSCfFibBmICt9oUTooay2YJY2fAmKF381\",\"encoded\":\"Syp9J4vLqBLJSCfFibBmICt9oUTooay2YJY2fAmKF381\",\"format\":\"svg\"}"
+    }
+  ]
+}
+```
+
+You can then visit the URL to see your PlantUML diagram rendered as SVG.
+
+## Testing
+
+### Unit Tests
+```shell
+npm test
+```
+
+### Integration Tests
+```shell
+node tests/integration-tests-mcp.js
+```
+
+The integration tests verify that the MCP server works correctly as a real MCP client would, using HTTP requests via curl to test the MCP protocol methods (`tools/list` and `tools/call`) and validate end-to-end functionality. This ensures the server behaves correctly as a stateless MCP server and properly handles all acceptance and validation test cases.
+
 ## Install and run locally
 
 ```shell

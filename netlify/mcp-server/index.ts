@@ -5,6 +5,7 @@ import {
   GetPromptResult,
   ReadResourceResult,
 } from "@modelcontextprotocol/sdk/types.js";
+import { registerPlantUMLEncoderTool } from './tools/plantuml-encoder.js';
 
 
 export const setupMCPServer = (): McpServer => {
@@ -16,6 +17,9 @@ export const setupMCPServer = (): McpServer => {
     },
     { capabilities: { logging: {} } }
   );
+
+  // Регистрируем PlantUML encoder tool
+  registerPlantUMLEncoderTool(server);
 
   // Register a prompt template that allows the server to
   // provide the context structure and (optionally) the variables
