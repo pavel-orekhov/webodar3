@@ -17,6 +17,7 @@
         "zod": "^3.24.3"
     },
     "devDependencies": {
+        "netlify-cli": "^23.13.5",
         "tsx": "^4.21.0"
     },
     "scripts": {
