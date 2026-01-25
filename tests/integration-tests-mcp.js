@@ -43,7 +43,7 @@ async function makeMCPRequest(method, params = {}, id = Date.now()) {
 async function startServer() {
   console.log('1. Starting netlify development server...');
   
-  const server = spawn('netlify', ['dev', '--port=8888'], {
+  const server = spawn('npx', ['netlify', 'dev', '--port=8888'], {
     cwd: process.cwd(),
     stdio: ['ignore', 'pipe', 'pipe']
   });
@@ -175,7 +175,51 @@ async function runTests() {
       }
     }
     
-    console.log('6. Stopping server...');
+    console.log('6. Testing MCP tool with syntax validation tests...');
+    
+    let syntaxPassed = 0;
+    testNum = 0;
+    const syntaxTests = testData.syntax_validation_tests || [];
+    
+    for (const testCase of syntaxTests) {
+      testNum++;
+      console.log(`   Test ${testNum}/${syntaxTests.length}: ${testCase.name}...`);
+      
+      try {
+        const callResponse = await makeMCPRequest('tools/call', {
+          name: 'encode-plantuml',
+          arguments: {
+            plantumlCode: testCase.code
+          }
+        });
+        
+        const content = callResponse.result?.content?.[0]?.text;
+        if (content) {
+          const result = JSON.parse(content);
+          if (testCase.valid) {
+            if (result.status === 'success' && result.url.startsWith(testData.expected_url_prefix)) {
+              console.log(`      ✅ ${testCase.name}: PASS (Valid)`);
+              syntaxPassed++;
+            } else {
+              console.log(`      ❌ ${testCase.name}: FAIL (Expected success, got ${result.status})`);
+            }
+          } else {
+            if (result.code === testCase.expected_error) {
+              console.log(`      ✅ ${testCase.name}: PASS (Caught ${testCase.expected_error})`);
+              syntaxPassed++;
+            } else {
+              console.log(`      ❌ ${testCase.name}: FAIL (Expected error ${testCase.expected_error}, got ${result.code})`);
+            }
+          }
+        } else {
+          console.log(`      ❌ ${testCase.name}: FAIL - No content in response`);
+        }
+      } catch (error) {
+        console.log(`      ❌ ${testCase.name}: FAIL - ${error.message}`);
+      }
+    }
+    
+    console.log('7. Stopping server...');
     server.kill();
     
     // Итоговый отчет
@@ -183,8 +227,9 @@ async function runTests() {
     console.log('=== FINAL REPORT ===');
     console.log(`Acceptance Tests: ${acceptancePassed}/5 passed`);
     console.log(`Validation Tests: ${validationPassed}/3 passed`);
+    console.log(`Syntax Tests:     ${syntaxPassed}/${syntaxTests.length} passed`);
     
-    if (acceptancePassed === 5 && validationPassed === 3) {
+    if (acceptancePassed === 5 && validationPassed === 3 && syntaxPassed === syntaxTests.length) {
       console.log('🎉 ALL TESTS PASSED SUCCESSFULLY!');
       console.log('');
       console.log('MCP Server integration verified:');

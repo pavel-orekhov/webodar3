@@ -28,10 +28,10 @@ Importantly, because of how Express handles mapping routes, ensure you set the `
 
 ### PlantUML Encoder Tool
 
-This MCP server includes a **PlantUML Encoder** tool that allows you to encode PlantUML diagrams into shareable URLs for plantuml.com.
+This MCP server includes a **PlantUML Encoder** tool that allows you to encode PlantUML diagrams into shareable URLs for uml.planttext.com.
 
 #### What it does
-Encodes PlantUML diagram code into a compressed URL that can be viewed on plantuml.com
+Encodes PlantUML diagram code into a compressed URL that can be viewed on uml.planttext.com
 
 #### Parameters
 - `plantumlCode` (string): PlantUML diagram code to encode (max 50KB)
@@ -66,7 +66,7 @@ Example response:
   "content": [
     {
       "type": "text",
-      "text": "{\"status\":\"success\",\"url\":\"https://www.plantuml.com/plantuml/svg/SrJGjLDm0W00\",\"encoded\":\"SrJGjLDm0W00\",\"format\":\"svg\"}"
+      "text": "{\"status\":\"success\",\"url\":\"https://uml.planttext.com/plantuml/svg/SrJGjLDm0W00\",\"encoded\":\"SrJGjLDm0W00\",\"format\":\"svg\"}"
     }
   ]
 }
@@ -81,9 +81,23 @@ On error:
 }
 ```
 
+#### PlantUML Syntax Rules
+The tool enforces strict syntax rules for compatibility and readability:
+
+1. **@startuml must be nameless**
+   - ❌ WRONG: `@startuml cto_architecture` or `@startumlcto_architecture`
+   - ✅ CORRECT: `@startuml` (keyword only)
+
+2. **Class names must use camelCase**
+   - ❌ WRONG: `class query-docs` (no hyphens allowed)
+   - ✅ CORRECT: `class queryDocs` (use camelCase)
+
+These rules are enforced by the tool and will return `INVALID_SYNTAX` error if violated.
+
 #### Error codes
 - `EMPTY_CODE`: PlantUML code is required and cannot be empty
 - `CODE_TOO_LARGE`: PlantUML code exceeds maximum size of 50KB
+- `INVALID_SYNTAX`: Violates strict syntax rules
 - `ENCODING_FAILED`: Failed to encode PlantUML diagram
 
 #### Example usage via MCP client
@@ -103,7 +117,7 @@ Example response:
   "content": [
     {
       "type": "text",
-      "text": "{\"status\":\"success\",\"url\":\"https://www.plantuml.com/plantuml/svg/Syp9J4vLqBLJSCfFibBmICt9oUTooay2YJY2fAmKF381\",\"encoded\":\"Syp9J4vLqBLJSCfFibBmICt9oUTooay2YJY2fAmKF381\",\"format\":\"svg\"}"
+      "text": "{\"status\":\"success\",\"url\":\"https://uml.planttext.com/plantuml/svg/Syp9J4vLqBLJSCfFibBmICt9oUTooay2YJY2fAmKF381\",\"encoded\":\"Syp9J4vLqBLJSCfFibBmICt9oUTooay2YJY2fAmKF381\",\"format\":\"svg\"}"
     }
   ]
 }

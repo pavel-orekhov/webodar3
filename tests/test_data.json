@@ -1,1 +1,84 @@
-{"acceptance_tests": [{"name": "Test 1", "code": "@startuml\nA -> B\n@enduml", "expected": "SrJGjLDm0W00"}, {"name": "Test 2", "code": "@startuml\nAlice -> Bob: Hello\nBob -> Alice: Hi\n@enduml", "expected": "Syp9J4vLqBLJSCfFibBmICt9oUTooay2YJY2fAmKF381"}, {"name": "Test 3", "code": "@startuml\n[*] --> State1\nState1 --> State2\n@enduml", "expected": "YzQALT3LjLC8BaaiIJNaWb084IC0"}, {"name": "Test 4", "code": "@startuml\nclass User {\n    name: String\n  email: String\n}\n@enduml", "expected": "Iyv9B2vM22rEBLAevb9GK538IynDjL88BYdAp4ldKb18pKtCp87pQm40"}, {"name": "Test 5", "code": "@startuml\nstart\n:action;\nstop\n@enduml", "expected": "Aov9B2hXiafCBidCpxFcAYx9Bm00"}], "validation_tests": [{"name": "Empty string", "code": "", "expected_error": "EMPTY_CODE"}, {"name": "Whitespace only", "code": "   \n\t  ", "expected_error": "EMPTY_CODE"}, {"name": "Large code", "code": "LARGE_CODE_PLACEHOLDER", "expected_error": "CODE_TOO_LARGE"}]}
+{
+  "acceptance_tests": [
+    {
+      "name": "Test 1",
+      "code": "@startuml\nA -> B\n@enduml",
+      "expected": "SrJGjLDm0W00"
+    },
+    {
+      "name": "Test 2",
+      "code": "@startuml\nAlice -> Bob: Hello\nBob -> Alice: Hi\n@enduml",
+      "expected": "Syp9J4vLqBLJSCfFibBmICt9oUTooay2YJY2fAmKF381"
+    },
+    {
+      "name": "Test 3",
+      "code": "@startuml\n[*] --> State1\nState1 --> State2\n@enduml",
+      "expected": "YzQALT3LjLC8BaaiIJNaWb084IC0"
+    },
+    {
+      "name": "Test 4",
+      "code": "@startuml\nclass User {\n    name: String\n  email: String\n}\n@enduml",
+      "expected": "Iyv9B2vM22rEBLAevb9GK538IynDjL88BYdAp4ldKb18pKtCp87pQm40"
+    },
+    {
+      "name": "Test 5",
+      "code": "@startuml\nstart\n:action;\nstop\n@enduml",
+      "expected": "Aov9B2hXiafCBidCpxFcAYx9Bm00"
+    }
+  ],
+  "validation_tests": [
+    {
+      "name": "Empty string",
+      "code": "",
+      "expected_error": "EMPTY_CODE"
+    },
+    {
+      "name": "Whitespace only",
+      "code": "   \n\t  ",
+      "expected_error": "EMPTY_CODE"
+    },
+    {
+      "name": "Large code",
+      "code": "LARGE_CODE_PLACEHOLDER",
+      "expected_error": "CODE_TOO_LARGE"
+    }
+  ],
+  "syntax_validation_tests": [
+    {
+      "name": "Attached @startuml name",
+      "code": "@startumlcto_architecture\nA -> B\n@enduml",
+      "expected_error": "INVALID_SYNTAX"
+    },
+    {
+      "name": "Spaced @startuml name",
+      "code": "@startuml cto_architecture\nA -> B\n@enduml",
+      "expected_error": "INVALID_SYNTAX"
+    },
+    {
+      "name": "Hyphenated class name 1",
+      "code": "@startuml\nclass query-docs\n@enduml",
+      "expected_error": "INVALID_SYNTAX"
+    },
+    {
+      "name": "Hyphenated class name 2",
+      "code": "@startuml\nclass resolve-library-id {\n  id: string\n}\n@enduml",
+      "expected_error": "INVALID_SYNTAX"
+    },
+    {
+      "name": "Valid nameless @startuml",
+      "code": "@startuml\nA -> B\n@enduml",
+      "valid": true
+    },
+    {
+      "name": "Valid camelCase class name 1",
+      "code": "@startuml\nclass queryDocs\n@enduml",
+      "valid": true
+    },
+    {
+      "name": "Valid camelCase class name 2",
+      "code": "@startuml\nclass resolveLibraryId {\n  id: string\n}\n@enduml",
+      "valid": true
+    }
+  ],
+  "expected_url_prefix": "https://uml.planttext.com/plantuml/svg/"
+}

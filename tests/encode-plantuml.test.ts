@@ -44,8 +44,29 @@ for (const testCase of testData.validation_tests) {
   console.log(`✅ ${testCase.name}: PASS`);
 }
 
+// Syntax validation tests
+console.log('\n=== SYNTAX VALIDATION TESTS ===');
+for (const testCase of testData.syntax_validation_tests) {
+  const result = validatePlantUMLCode(testCase.code);
+  
+  if (testCase.valid) {
+    assert.strictEqual(result.valid, true, `${testCase.name}: Expected valid, got invalid (${result.code}: ${result.message})`);
+  } else {
+    assert.strictEqual(result.valid, false, `${testCase.name}: Expected invalid, got valid`);
+    assert.strictEqual(result.code, testCase.expected_error, `${testCase.name}: Expected error code ${testCase.expected_error}, got ${result.code}`);
+  }
+  console.log(`✅ ${testCase.name}: PASS`);
+}
+
 // Additional tests
 console.log('\n=== ADDITIONAL TESTS ===');
+
+// Test URL prefix
+const simpleCode = "@startuml\nA -> B\n@enduml";
+const encoded = encodePlantUML(simpleCode);
+const url = `https://uml.planttext.com/plantuml/svg/${encoded}`;
+assert.ok(url.startsWith(testData.expected_url_prefix), `URL should start with ${testData.expected_url_prefix}`);
+console.log("✅ URL prefix test: PASS");
 
 // Test exactly 50KB (should pass)
 const exactCode = "a".repeat(50 * 1024);
@@ -54,7 +75,6 @@ assert.strictEqual(exactResult.valid, true);
 console.log("✅ Exactly 50KB validation: PASS");
 
 // Test determinism
-const simpleCode = "@startuml\nA -> B\n@enduml";
 const result1 = encodePlantUML(simpleCode);
 const result2 = encodePlantUML(simpleCode);
 assert.strictEqual(result1, result2);
