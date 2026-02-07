@@ -268,12 +268,17 @@
           return;
         }
 
-        diagramsContainer.innerHTML = data.diagrams.map(diagram => `
-          <div class="diagram-item" data-label="${diagram.label}">
+        diagramsContainer.innerHTML = data.diagrams.map(diagram => {
+          const safeLabel = escapeHtml(diagram.label);
+          const labelJson = JSON.stringify(diagram.label);
+          const previewId = `preview-${encodeURIComponent(diagram.label)}`;
+
+          return `
+          <div class="diagram-item" data-label="${safeLabel}">
             <div class="diagram-header">
               <div class="diagram-label-container">
-                <div class="diagram-label">${diagram.label}</div>
-                <button class="copy-btn" onclick="copyLabel('${diagram.label}', this)" title="Copy label">
+                <div class="diagram-label">${safeLabel}</div>
+                <button class="copy-btn" onclick="copyLabel(${labelJson}, this)" title="Copy label">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
@@ -285,13 +290,13 @@
                 </div>
               </div>
               <div class="diagram-actions">
-                <button onclick="togglePreview('${diagram.label}')">Show/Hide</button>
+                <button onclick="togglePreview(${labelJson})">Show/Hide</button>
                 ${diagram.url ? `<button onclick="window.open('${diagram.url}', '_blank')">Open URL</button>` : ''}
-                <button class="danger" onclick="deleteDiagram('${diagram.label}')">Delete</button>
+                <button class="danger" onclick="deleteDiagram(${labelJson})">Delete</button>
               </div>
             </div>
             ${diagram.url ? `
-              <div class="diagram-preview" id="preview-${diagram.label}">
+              <div class="diagram-preview" id="${previewId}">
                 <div class="diagram-preview-content">
                   <div class="diagram-source">
                     <h4>PlantUML Source</h4>
@@ -304,7 +309,8 @@
               </div>
             ` : '<p>No preview URL available</p>'}
           </div>
-        `).join('');
+        `;
+        }).join('');
 
       } catch (error) {
         loadingEl.style.display = 'none';
@@ -317,7 +323,7 @@
     }
 
     function togglePreview(label) {
-      const preview = document.getElementById(`preview-${label}`);
+      const preview = document.getElementById(`preview-${encodeURIComponent(label)}`);
       if (preview) {
         preview.classList.toggle('expanded');
       }
@@ -335,8 +341,14 @@
         const data = await response.json();
 
         if (data.status === 'success') {
-          document.querySelector(`[data-label="${label}"]`).remove();
-          
+          const escapedLabel = window.CSS && CSS.escape
+            ? CSS.escape(label)
+            : label.replace(/["\\]/g, '\\$&');
+          const item = document.querySelector(`[data-label="${escapedLabel}"]`);
+          if (item) {
+            item.remove();
+          }
+
           if (document.querySelectorAll('.diagram-item').length === 0) {
             document.getElementById('diagrams-container').innerHTML = '<p>No diagrams stored yet.</p>';
           }
