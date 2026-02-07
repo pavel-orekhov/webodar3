@@ -27,7 +27,7 @@
     }
     .diagram-label-container {
       display: flex;
-      align-items: center;
+      flex-direction: column;
       gap: 10px;
       flex: 1;
       min-width: 0;
@@ -138,7 +138,6 @@
     .diagram-meta {
       font-size: 0.9em;
       color: #b3c6f5;
-      margin-top: 5px;
     }
     .error-message {
       color: #ffb3b3;
@@ -283,15 +282,15 @@
                   </svg>
                   Copy
                 </button>
+                <div class="diagram-meta">
+                  Created: ${new Date(diagram.createdAt).toLocaleString()}
+                </div>
               </div>
               <div class="diagram-actions">
                 <button onclick="togglePreview('${diagram.label}')">Show/Hide</button>
                 ${diagram.url ? `<button onclick="window.open('${diagram.url}', '_blank')">Open URL</button>` : ''}
                 <button class="danger" onclick="deleteDiagram('${diagram.label}')">Delete</button>
               </div>
-            </div>
-            <div class="diagram-meta">
-              Created: ${new Date(diagram.createdAt).toLocaleString()}
             </div>
             ${diagram.url ? `
               <div class="diagram-preview" id="preview-${diagram.label}">
