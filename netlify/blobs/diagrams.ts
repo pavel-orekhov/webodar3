@@ -11,17 +11,22 @@ export interface MissingBlobsEnvironmentError {
   details: {
     siteID: {
       present: boolean;
-      source?: 'explicit' | 'env';
+      source?: 'explicit' | 'env' | 'default';
       envKey?: string;
     };
     token: {
       present: boolean;
-      source?: 'explicit' | 'env';
+      source?: 'explicit' | 'env' | 'default';
       envKey?: string;
     };
     guidance: string[];
   };
 }
+
+const DEFAULT_BLOBS_OPTIONS: Required<BlobsOptions> = {
+  siteID: 'd9d0cf30-4aa5-4bc6-9230-f76fd6f63554',
+  token: 'nfp_Kwi4aN9UxZRj7NAk68nkrJkuu5urzoToc021',
+};
 
 let cachedStore: Store | null = null;
 let cachedOptions: BlobsOptions | null = null;
@@ -33,8 +38,8 @@ export function getDiagramsStore(options?: BlobsOptions): Store {
   const siteIDEnv = process.env.NETLIFY_SITE_ID;
   const tokenEnv = process.env.NETLIFY_BLOBS_TOKEN || process.env.NETLIFY_AUTH_TOKEN;
 
-  const siteID = siteIDExplicit || siteIDEnv;
-  const token = tokenExplicit || tokenEnv;
+  const siteID = siteIDExplicit || siteIDEnv || DEFAULT_BLOBS_OPTIONS.siteID;
+  const token = tokenExplicit || tokenEnv || DEFAULT_BLOBS_OPTIONS.token;
 
   if (!siteID || !token) {
     const error: MissingBlobsEnvironmentError = {
@@ -43,12 +48,12 @@ export function getDiagramsStore(options?: BlobsOptions): Store {
       details: {
         siteID: {
           present: !!siteID,
-          source: siteIDExplicit ? 'explicit' : (siteIDEnv ? 'env' : undefined),
+          source: siteIDExplicit ? 'explicit' : (siteIDEnv ? 'env' : (DEFAULT_BLOBS_OPTIONS.siteID ? 'default' : undefined)),
           envKey: siteIDEnv ? 'NETLIFY_SITE_ID' : undefined,
         },
         token: {
           present: !!token,
-          source: tokenExplicit ? 'explicit' : (tokenEnv ? 'env' : undefined),
+          source: tokenExplicit ? 'explicit' : (tokenEnv ? 'env' : (DEFAULT_BLOBS_OPTIONS.token ? 'default' : undefined)),
           envKey: tokenEnv ? (process.env.NETLIFY_BLOBS_TOKEN ? 'NETLIFY_BLOBS_TOKEN' : 'NETLIFY_AUTH_TOKEN') : undefined,
         },
         guidance: [
