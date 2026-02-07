@@ -8,6 +8,78 @@
   <link rel="preload" href="https://example-styles.netlify.app/fonts/PacaembuVar-latin.woff2" as="font" type="font/woff2" />
   <link rel="preload" href="https://example-styles.netlify.app/fonts/MulishVar-latin.woff2" as="font" type="font/woff2" />
   <link rel="stylesheet" href="https://example-styles.netlify.app/styles.css">
+  <style>
+    .diagram-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .diagram-card {
+      border: 1px solid #d0d7de;
+      border-radius: 12px;
+      padding: 16px;
+      background: #fff;
+    }
+
+    .diagram-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .diagram-meta {
+      color: #57606a;
+      font-size: 0.9rem;
+    }
+
+    .diagram-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .diagram-actions button {
+      border: 1px solid #d0d7de;
+      background: #f6f8fa;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .diagram-actions button:disabled {
+      cursor: wait;
+      opacity: 0.6;
+    }
+
+    .diagram-body {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    .diagram-details pre {
+      background: #f6f8fa;
+      padding: 8px;
+      border-radius: 6px;
+      overflow: auto;
+    }
+
+    .diagram-preview img {
+      width: 100%;
+      border: 1px solid #d0d7de;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    @media (max-width: 900px) {
+      .diagram-body {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -90,6 +162,16 @@ Bob -> Alice: Hi</code></pre>
         <li><code>INVALID_SYNTAX</code>: Violates strict syntax rules</li>
         <li><code>ENCODING_FAILED</code>: Failed to encode PlantUML diagram</li>
       </ul>
+    </section>
+
+    <section>
+      <h2>Recent diagrams</h2>
+      <p>
+        Diagrams stored via the MCP tools are saved in Netlify Blobs and listed here.
+        Expand a diagram to see the PlantUML source, encoded payload, and rendered SVG.
+      </p>
+      <p id="diagram-status">Loading diagrams...</p>
+      <div id="diagram-list" class="diagram-list" hidden></div>
     </section>
 
     <section>
@@ -181,5 +263,169 @@ Bob -> Alice: Hi</code></pre>
       <div>© 2025 Netlify</div>
     </small>
   </footer>
+  <script>
+    const diagramList = document.getElementById("diagram-list");
+    const diagramStatus = document.getElementById("diagram-status");
+
+    const setStatus = (message) => {
+      diagramStatus.textContent = message;
+    };
+
+    const formatDate = (value) => {
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? value : date.toLocaleString();
+    };
+
+    const renderDiagram = (diagram) => {
+      const card = document.createElement("article");
+      card.className = "diagram-card";
+      card.dataset.key = diagram.key;
+
+      const header = document.createElement("div");
+      header.className = "diagram-header";
+
+      const headerInfo = document.createElement("div");
+
+      const labelEl = document.createElement("div");
+      const labelStrong = document.createElement("strong");
+      labelStrong.textContent = diagram.label;
+      labelEl.appendChild(labelStrong);
+
+      const createdEl = document.createElement("div");
+      createdEl.className = "diagram-meta";
+      createdEl.textContent = `Created ${formatDate(diagram.createdAt)}`;
+
+      headerInfo.appendChild(labelEl);
+      headerInfo.appendChild(createdEl);
+
+      const actions = document.createElement("div");
+      actions.className = "diagram-actions";
+
+      const toggleButton = document.createElement("button");
+      toggleButton.type = "button";
+      toggleButton.textContent = "Expand";
+
+      const deleteButton = document.createElement("button");
+      deleteButton.type = "button";
+      deleteButton.textContent = "Delete";
+
+      actions.appendChild(toggleButton);
+      actions.appendChild(deleteButton);
+
+      header.appendChild(headerInfo);
+      header.appendChild(actions);
+
+      const body = document.createElement("div");
+      body.className = "diagram-body";
+      body.hidden = true;
+
+      const details = document.createElement("div");
+      details.className = "diagram-details";
+
+      const topicLine = document.createElement("p");
+      const topicStrong = document.createElement("strong");
+      topicStrong.textContent = "Topic: ";
+      topicLine.appendChild(topicStrong);
+      topicLine.append(diagram.topic);
+
+      const codeLabel = document.createElement("p");
+      const codeStrong = document.createElement("strong");
+      codeStrong.textContent = "PlantUML code";
+      codeLabel.appendChild(codeStrong);
+
+      const codeBlock = document.createElement("pre");
+      codeBlock.textContent = diagram.plantumlCode;
+
+      const encodedLabel = document.createElement("p");
+      const encodedStrong = document.createElement("strong");
+      encodedStrong.textContent = "Encoded payload";
+      encodedLabel.appendChild(encodedStrong);
+
+      const encodedBlock = document.createElement("pre");
+      encodedBlock.textContent = diagram.encoded;
+
+      details.appendChild(topicLine);
+      details.appendChild(codeLabel);
+      details.appendChild(codeBlock);
+      details.appendChild(encodedLabel);
+      details.appendChild(encodedBlock);
+
+      const preview = document.createElement("div");
+      preview.className = "diagram-preview";
+      const previewImg = document.createElement("img");
+      previewImg.src = diagram.svgUrl;
+      previewImg.alt = diagram.label;
+      preview.appendChild(previewImg);
+
+      body.appendChild(details);
+      body.appendChild(preview);
+
+      toggleButton.addEventListener("click", () => {
+        body.hidden = !body.hidden;
+        toggleButton.textContent = body.hidden ? "Expand" : "Collapse";
+      });
+
+      deleteButton.addEventListener("click", async () => {
+        deleteButton.disabled = true;
+        deleteButton.textContent = "Deleting...";
+
+        try {
+          const response = await fetch(
+            `/.netlify/functions/diagrams?key=${encodeURIComponent(diagram.key)}`,
+            { method: "DELETE" }
+          );
+
+          if (!response.ok) {
+            throw new Error("Delete failed");
+          }
+
+          card.remove();
+          if (!diagramList.children.length) {
+            diagramList.hidden = true;
+            setStatus("No stored diagrams yet.");
+          }
+        } catch (error) {
+          console.error("Failed to delete diagram", error);
+          deleteButton.disabled = false;
+          deleteButton.textContent = "Delete";
+          setStatus("Unable to delete diagram. Please try again.");
+        }
+      });
+
+      card.appendChild(header);
+      card.appendChild(body);
+
+      diagramList.appendChild(card);
+    };
+
+    const loadDiagrams = async () => {
+      setStatus("Loading diagrams...");
+      diagramList.hidden = true;
+      diagramList.innerHTML = "";
+
+      try {
+        const response = await fetch("/.netlify/functions/diagrams");
+        if (!response.ok) {
+          throw new Error("Failed to load diagrams");
+        }
+        const data = await response.json();
+        const diagrams = Array.isArray(data.diagrams) ? data.diagrams : [];
+
+        if (!diagrams.length) {
+          setStatus("No stored diagrams yet.");
+          return;
+        }
+
+        setStatus("");
+        diagramList.hidden = false;
+        diagrams.forEach(renderDiagram);
+      } catch (error) {
+        console.error("Failed to load diagrams", error);
+        setStatus("Unable to load diagrams right now.");
+      }
+    };
+
+    loadDiagrams();
+  </script>
 </body>
 </html>

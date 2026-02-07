@@ -125,6 +125,44 @@ Example response:
 
 You can then visit the URL to see your PlantUML diagram rendered as SVG.
 
+### Diagram Storage Tools (Netlify Blobs)
+
+The MCP server also ships with tools for persisting PlantUML variants in Netlify Blobs so they can be retrieved by label and surfaced in the frontend.
+
+#### store-diagram
+
+Stores a diagram payload in Netlify Blobs and generates a label from the topic plus two digits.
+
+Parameters:
+- `topic` (string): Human-friendly label seed for the diagram
+- `plantumlCode` (string): PlantUML diagram code to store (max 50KB)
+
+Example response:
+```json
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"status\":\"success\",\"diagram\":{\"label\":\"checkout-flow-07\",\"key\":\"checkout-flow-07/2025-02-08T19-42-11-343Z\",\"svgUrl\":\"https://uml.planttext.com/plantuml/svg/...\",\"encoded\":\"...\",\"createdAt\":\"2025-02-08T19:42:11.343Z\"}}"
+    }
+  ]
+}
+```
+
+#### get-diagram-by-label
+
+Fetches the most recent stored diagram for a given label.
+
+Parameters:
+- `label` (string): Diagram label to fetch
+
+#### Diagram list endpoint
+
+The frontend calls `/.netlify/functions/diagrams` to list and delete stored diagrams:
+
+- `GET /.netlify/functions/diagrams` returns `{ "diagrams": [...] }`
+- `DELETE /.netlify/functions/diagrams?key=<diagramKey>` deletes the stored record
+
 ## Testing
 
 ### Unit Tests
