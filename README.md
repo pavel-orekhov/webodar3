@@ -14,7 +14,7 @@ webodar3 is a basic example of developing and running a serverless MCP server us
 - [Docs: Netlify Functions](https://docs.netlify.com/functions/overview/?utm_campaign=dx-examples&utm_source=example-site&utm_medium=web&utm_content=example-mcp-express)
 - [Agent Experience (AX)](https://agentexperience.ax?utm_source=express-mcp-guide&utm_medium=web&utm_content=example-mcp-express)
 
-Importantly, because of how Express handles mapping routes, ensure you set the `netlify.toml` redirects to the correct path. In this repo we have the following to ensure <domain>/mcp catches all of the requests to this server:
+Importantly, because of how Express handles mapping routes, ensure you set the `netlify.toml` redirects to the correct path. In this repo we have the following to ensure `<domain>/mcp` catches all of the requests to this server:
 
 ```toml
 [[redirects]]
@@ -31,99 +31,46 @@ Importantly, because of how Express handles mapping routes, ensure you set the `
 This MCP server includes a **PlantUML Encoder** tool that allows you to encode PlantUML diagrams into shareable URLs for uml.planttext.com.
 
 #### What it does
-Encodes PlantUML diagram code into a compressed URL that can be viewed on uml.planttext.com
+Encodes PlantUML diagram code into a compressed URL that can be viewed on uml.planttext.com.
 
 #### Parameters
 - `plantumlCode` (string): PlantUML diagram code to encode (max 50KB)
 
-The tool accepts both formats:
-- Full PlantUML code with `@startuml` and `@enduml` wrappers
-- Raw diagram code without wrappers
+### Diagram Management Tools (Netlify Blobs)
 
-Example with wrappers:
-```json
-{
-  "tool": "encode-plantuml",
-  "arguments": {
-    "plantumlCode": "@startuml\nA -> B: Hello\n@enduml"
-  }
-}
-```
+New tools for persistent diagram storage using Netlify Blobs.
 
-Example without wrappers:
-```json
-{
-  "tool": "encode-plantuml",
-  "arguments": {
-    "plantumlCode": "A -> B: Hello"
-  }
-}
-```
+#### `save-diagram`
+Saves a PlantUML diagram. Collisions are acceptable; the latest version for a given label is always tracked.
+- `label` (string): Label for the diagram.
+- `plantumlCode` (string): PlantUML code.
 
-Example response:
-```json
-{
-  "content": [
-    {
-      "type": "text",
-      "text": "{\"status\":\"success\",\"url\":\"https://uml.planttext.com/plantuml/svg/SrJGjLDm0W00\",\"encoded\":\"SrJGjLDm0W00\",\"format\":\"svg\"}"
-    }
-  ]
-}
-```
+#### `get-diagram-by-label`
+Retrieves the **latest** PlantUML diagram by its label.
+- `label` (string): Label of the diagram to fetch.
 
-On error:
-```json
-{
-  "status": "error",
-  "code": "ERROR_CODE",
-  "message": "error_description"
-}
-```
+#### `list-diagrams`
+Lists all saved diagrams. The list is unlimited and sorted by most recent first.
 
-#### PlantUML Syntax Rules
-The tool enforces strict syntax rules for compatibility and readability:
+## Web Interfaces
 
-1. **@startuml must be nameless**
-   - ❌ WRONG: `@startuml cto_architecture` or `@startumlcto_architecture`
-   - ✅ CORRECT: `@startuml` (keyword only)
+### Diagrams Viewer
+A web interface to explore saved diagrams is available at [webodar3.netlify.app/diagrams.html](https://webodar3.netlify.app/diagrams.html). 
+- View a list of all saved diagrams.
+- Expand/collapse PlantUML source code.
+- View rendered SVG in an iframe.
 
-2. **Class names must use camelCase**
-   - ❌ WRONG: `class query-docs` (no hyphens allowed)
-   - ✅ CORRECT: `class queryDocs` (use camelCase)
+### Env Viewer
+A secure environment variable viewer is available at `/env.html`.
+- Displays all `process.env` keys.
+- Values are masked: all characters are replaced by `?` except for the last 4.
 
-These rules are enforced by the tool and will return `INVALID_SYNTAX` error if violated.
-
-#### Error codes
-- `EMPTY_CODE`: PlantUML code is required and cannot be empty
-- `CODE_TOO_LARGE`: PlantUML code exceeds maximum size of 50KB
-- `INVALID_SYNTAX`: Violates strict syntax rules
-- `ENCODING_FAILED`: Failed to encode PlantUML diagram
-
-#### Example usage via MCP client
-
-```json
-{
-  "tool": "encode-plantuml",
-  "arguments": {
-    "plantumlCode": "A -> B: Hello\\nB -> A: Hi"
-  }
-}
-```
-
-Example response:
-```json
-{
-  "content": [
-    {
-      "type": "text",
-      "text": "{\"status\":\"success\",\"url\":\"https://uml.planttext.com/plantuml/svg/Syp9J4vLqBLJSCfFibBmICt9oUTooay2YJY2fAmKF381\",\"encoded\":\"Syp9J4vLqBLJSCfFibBmICt9oUTooay2YJY2fAmKF381\",\"format\":\"svg\"}"
-    }
-  ]
-}
-```
-
-You can then visit the URL to see your PlantUML diagram rendered as SVG.
+## Netlify Blobs Store Helper
+The project includes a robust Netlify Blobs helper (`netlify/lib/blobs.ts`) that supports:
+- Environment-based configuration (`NETLIFY_SITE_ID`, `NETLIFY_AUTH_TOKEN`).
+- Explicit configuration options.
+- Lazy initialization.
+- Detailed structured error reporting if configuration is missing.
 
 ## Testing
 
@@ -137,8 +84,6 @@ npm test
 node tests/integration-tests-mcp.js
 ```
 
-The integration tests verify that the MCP server works correctly as a real MCP client would, using HTTP requests via curl to test the MCP protocol methods (`tools/list` and `tools/call`) and validate end-to-end functionality. This ensures the server behaves correctly as a stateless MCP server and properly handles all acceptance and validation test cases.
-
 ## Install and run locally
 
 ```shell
@@ -151,12 +96,12 @@ cd webodar3
 # 3. Install dependencies
 npm install
 
-# 4. Install the Netlify CLI to let you locally serve your site using Netlify's features
+# 4. Install the Netlify CLI
 npm i -g netlify-cli
 
-# 5. Serve your site using Netlify Dev to get local serverless functions
+# 5. Serve your site locally
 netlify dev
 
-# 6. While the site is running locally, open a separate terminal tab to run the MCP inspector or client you desire
+# 6. Run the MCP inspector
 npx @modelcontextprotocol/inspector npx mcp-remote@next http://localhost:8888/mcp
 ```

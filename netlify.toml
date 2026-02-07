@@ -10,3 +10,15 @@
   from = "/mcp"
   status = 200
   to = "/.netlify/functions/express-mcp-server"
+
+[[redirects]]
+  force = true
+  from = "/api/diagrams"
+  status = 200
+  to = "/.netlify/functions/diagrams"
+
+[[redirects]]
+  force = true
+  from = "/api/env"
+  status = 200
+  to = "/.netlify/functions/env"

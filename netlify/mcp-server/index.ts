@@ -6,10 +6,10 @@ import {
   ReadResourceResult,
 } from "@modelcontextprotocol/sdk/types.js";
 import { registerPlantUMLEncoderTool } from './tools/plantuml-encoder.js';
+import { registerDiagramTools } from './tools/diagrams.js';
 
 
 export const setupMCPServer = (): McpServer => {
-
   const server = new McpServer(
     {
       name: "stateless-server",
@@ -20,6 +20,9 @@ export const setupMCPServer = (): McpServer => {
 
   // Регистрируем PlantUML encoder tool
   registerPlantUMLEncoderTool(server);
+  
+  // Register Diagram tools
+  registerDiagramTools(server);
 
   // Register a prompt template that allows the server to
   // provide the context structure and (optionally) the variables

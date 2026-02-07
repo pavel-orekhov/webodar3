@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagrams - webodar3</title>
+  <link rel="stylesheet" href="https://example-styles.netlify.app/styles.css">
+  <style>
+    .diagram-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .diagram-list {
+      border: 1px solid #ddd;
+      padding: 10px;
+      max-height: 400px;
+      overflow-y: auto;
+      background: #fff;
+    }
+    .diagram-item {
+      cursor: pointer;
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    .diagram-item:hover {
+      background-color: #f9f9f9;
+    }
+    .diagram-detail {
+      display: none;
+      border: 1px solid #ddd;
+      padding: 20px;
+      background: #fff;
+    }
+    .diagram-detail.active {
+      display: block;
+    }
+    .code-preview {
+      background: #f4f4f4;
+      padding: 10px;
+      white-space: pre-wrap;
+      max-height: 150px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid #ccc;
+    }
+    .code-preview.expanded {
+      max-height: none;
+    }
+    .expand-btn {
+      margin-top: 5px;
+      cursor: pointer;
+      color: #0070f3;
+      font-weight: bold;
+      display: inline-block;
+    }
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: 1px solid #eee;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/">Home</a> | <a href="/env.html">Env Viewer</a>
+    </nav>
+    <section>
+        <h1>Saved Diagrams</h1>
+        <p>View and explore PlantUML diagrams saved via MCP.</p>
+    </section>
+  </header>
+  <main>
+    <div class="diagram-container">
+      <section>
+        <h2>Recent Diagrams</h2>
+        <div id="diagram-list" class="diagram-list">
+          Loading diagrams...
+        </div>
+      </section>
+
+      <section id="diagram-detail" class="diagram-detail">
+        <h2 id="detail-label"></h2>
+        <p><strong>ID:</strong> <span id="detail-id"></span></p>
+        <p><strong>Timestamp:</strong> <span id="detail-timestamp"></span></p>
+        <div id="detail-code-container">
+            <strong>PlantUML Code:</strong>
+            <pre id="detail-code" class="code-preview"></pre>
+            <div id="expand-code" class="expand-btn">Expand Code</div>
+        </div>
+        <div id="detail-svg-container">
+          <iframe id="detail-iframe"></iframe>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const diagramList = document.getElementById('diagram-list');
+    const diagramDetail = document.getElementById('diagram-detail');
+    const detailLabel = document.getElementById('detail-label');
+    const detailId = document.getElementById('detail-id');
+    const detailTimestamp = document.getElementById('detail-timestamp');
+    const detailCode = document.getElementById('detail-code');
+    const detailIframe = document.getElementById('detail-iframe');
+    const expandCode = document.getElementById('expand-code');
+
+    async function fetchDiagrams() {
+      try {
+        const response = await fetch('/api/diagrams');
+        const data = await response.json();
+        if (data.diagrams) {
+          renderList(data.diagrams);
+        } else if (data.status === 'error') {
+            diagramList.innerHTML = `<p style="color: red">Error: ${data.message}</p><pre>${JSON.stringify(data, null, 2)}</pre>`;
+        } else {
+          diagramList.innerText = 'No diagrams found.';
+        }
+      } catch (error) {
+        diagramList.innerText = 'Error loading diagrams: ' + error.message;
+      }
+    }
+
+    function renderList(diagrams) {
+      diagramList.innerHTML = '';
+      if (diagrams.length === 0) {
+        diagramList.innerText = 'No diagrams found.';
+        return;
+      }
+      diagrams.forEach(d => {
+        const item = document.createElement('div');
+        item.className = 'diagram-item';
+        item.innerText = `${d.label || 'Untitled'} (${new Date(d.timestamp).toLocaleString()})`;
+        item.onclick = () => showDetail(d.id);
+        diagramList.appendChild(item);
+      });
+    }
+
+    async function showDetail(id) {
+      try {
+        const response = await fetch(`/api/diagrams?id=${id}`);
+        const diagram = await response.json();
+        
+        if (diagram.status === 'error') {
+            alert('Error: ' + diagram.message);
+            return;
+        }
+
+        detailLabel.innerText = diagram.label || 'Untitled';
+        detailId.innerText = diagram.id;
+        detailTimestamp.innerText = new Date(diagram.timestamp).toLocaleString();
+        detailCode.innerText = diagram.plantumlCode;
+        detailCode.classList.remove('expanded');
+        expandCode.innerText = 'Expand Code';
+        detailIframe.src = diagram.svgUrl;
+        
+        diagramDetail.classList.add('active');
+        diagramDetail.scrollIntoView({ behavior: 'smooth' });
+      } catch (error) {
+        alert('Error loading diagram detail: ' + error.message);
+      }
+    }
+
+    expandCode.onclick = () => {
+      if (detailCode.classList.contains('expanded')) {
+        detailCode.classList.remove('expanded');
+        expandCode.innerText = 'Expand Code';
+      } else {
+        detailCode.classList.add('expanded');
+        expandCode.innerText = 'Collapse Code';
+      }
+    };
+
+    fetchDiagrams();
+  </script>
+</body>
+</html>
