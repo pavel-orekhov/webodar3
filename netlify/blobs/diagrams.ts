@@ -74,8 +74,8 @@ export function getDiagramsStore(options?: BlobsOptions): Store {
 
   cachedStore = getStore({
     name: 'diagrams',
-    siteID,
-    token,
+    //siteID,
+    //token,
   });
 
   cachedOptions = { siteID, token };
