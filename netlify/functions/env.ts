@@ -18,12 +18,11 @@ function maskValue(value: string | undefined): { masked: string; isEmpty: boolea
   }
   
   if (value.length <= 4) {
-    return { masked: '????' + value, isEmpty: false, isUndefined: false };
+    return { masked: '?'.repeat(value.length), isEmpty: false, isUndefined: false };
   }
-  
-  const lastFour = value.slice(-4);
-  const questionMarks = '?'.repeat(value.length - 4);
-  return { masked: questionMarks + lastFour, isEmpty: false, isUndefined: false };
+
+  const visiblePrefix = value.slice(0, -4);
+  return { masked: `${visiblePrefix}????`, isEmpty: false, isUndefined: false };
 }
 
 export default async (req: Request, context: Context) => {

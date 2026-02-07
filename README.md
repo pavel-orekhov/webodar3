@@ -36,13 +36,16 @@ Features:
 - View creation timestamps
 
 ### Environment Variables Viewer
-Visit `/env.html` to view all environment variables with masked values (only last 4 characters visible).
+Visit `/env.html` to view all environment variables with masked values (last 4 characters hidden).
 
 Features:
 - List all environment variables
-- Masked values for security (only last 4 chars shown)
+- Masked values for security (last 4 chars hidden)
 - Search/filter variables
 - Flags for empty/undefined values
+
+### PlantUML Encoder Tool
+Visit `/plantuml.html` to learn about the MCP PlantUML encoder tool, syntax rules, and example usage.
 
 ## Netlify Blobs Configuration
 
