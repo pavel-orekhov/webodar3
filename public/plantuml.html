@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlantUML Encoder Tool - webodar3</title>
+  <meta name="description" content="Learn about the PlantUML Encoder tool">
+  <link rel="preload" href="https://example-styles.netlify.app/fonts/PacaembuVar-latin.woff2" as="font" type="font/woff2" />
+  <link rel="preload" href="https://example-styles.netlify.app/fonts/MulishVar-latin.woff2" as="font" type="font/woff2" />
+  <link rel="stylesheet" href="https://example-styles.netlify.app/styles.css">
+  <style>
+    .rule-grid {
+      display: flex;
+      gap: 40px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .rule-item {
+      min-width: 240px;
+    }
+    .rule-item p {
+      margin-bottom: 5px;
+    }
+    .rule-item .wrong {
+      color: #d73a49;
+    }
+    .rule-item .correct {
+      color: #22863a;
+    }
+    .nav-link {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #0366d6;
+      text-decoration: none;
+    }
+    .nav-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a href="https://www.netlify.com/">
+        <img src="https://example-styles.netlify.app/images/logo-netlify-small-monochrome-darkmode.svg" class="nf-logo" alt="Netlify">
+      </a>
+    </nav>
+    <section>
+      <h1>PlantUML Encoder Tool</h1>
+      <p>Learn about the MCP tool that encodes PlantUML diagrams into shareable URLs.</p>
+    </section>
+  </header>
+  <hr>
+  <main>
+    <section>
+      <div class="nav-link">
+        <a href="/">← Back to Home</a> | 
+        <a href="/diagrams.html">View Diagrams</a> | 
+        <a href="/env.html">View Environment Variables</a>
+      </div>
+
+      <p>
+        This MCP server includes a <strong>PlantUML Encoder</strong> tool that allows you to encode PlantUML diagrams into shareable URLs for uml.planttext.com. The tool compresses PlantUML code and generates a URL that can be used to view the diagram.
+      </p>
+      
+      <h3>How it works</h3>
+      <p>The tool takes PlantUML diagram code and encodes it using deflate compression and custom alphabet mapping, then generates a shareable URL.</p>
+      
+      <h3>PlantUML Syntax Rules</h3>
+      <p>The tool enforces mandatory syntax rules:</p>
+      <div class="rule-grid">
+        <div class="rule-item">
+          <h4>Rule 1: Nameless @startuml</h4>
+          <p class="wrong">❌ WRONG: <code>@startuml MyDiagram</code></p>
+          <p class="correct">✅ CORRECT: <code>@startuml</code></p>
+        </div>
+        <div class="rule-item">
+          <h4>Rule 2: camelCase Classes</h4>
+          <p class="wrong">❌ WRONG: <code>class my-class</code></p>
+          <p class="correct">✅ CORRECT: <code>class myClass</code></p>
+        </div>
+      </div>
+      <p>Violating these rules returns an <code>INVALID_SYNTAX</code> error.</p>
+
+      <h3>Example usage</h3>
+      <p>Input PlantUML code:</p>
+      <pre><code>Alice -> Bob: Hello
+Bob -> Alice: Hi</code></pre>
+      
+      <p>The tool will encode this to a URL like:</p>
+      <pre><code>https://uml.planttext.com/plantuml/svg/Syp9J4vLqBLJSCfFibBmICt9oUTooay2YJY2fAmKF381</code></pre>
+      
+      <p>You can visit this URL to see your PlantUML diagram rendered as SVG.</p>
+      
+      <h3>Tool parameters</h3>
+      <ul>
+        <li><code>plantumlCode</code> (string): PlantUML diagram code to encode (max 50KB)</li>
+      </ul>
+      
+      <h3>Error handling</h3>
+      <p>The tool validates input and returns appropriate error codes:</p>
+      <ul>
+        <li><code>EMPTY_CODE</code>: PlantUML code is required and cannot be empty</li>
+        <li><code>CODE_TOO_LARGE</code>: PlantUML code exceeds maximum size of 50KB</li>
+        <li><code>INVALID_SYNTAX</code>: Violates strict syntax rules</li>
+        <li><code>ENCODING_FAILED</code>: Failed to encode PlantUML diagram</li>
+      </ul>
+    </section>
+  </main>
+  <footer>
+    <div>
+      <a href="https://www.netlify.com/"><img src="https://example-styles.netlify.app/images/logo-netlify-small-monochrome-lightmode.svg" class="nf-logo" alt="Netlify logo"></a>
+    </div>
+    <small>
+      <div>© 2025 Netlify</div>
+    </small>
+  </footer>
+</body>
+</html>

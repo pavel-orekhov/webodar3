@@ -24,7 +24,129 @@ Importantly, because of how Express handles mapping routes, ensure you set the `
   to = "/.netlify/functions/express-mcp-server"
 ```
 
+## Additional Pages
+
+### Diagrams Viewer
+Visit `/diagrams.html` to view, preview, and manage all PlantUML diagrams stored in Netlify Blobs.
+
+Features:
+- List all stored diagrams
+- Expand/collapse diagram previews (iframe SVG)
+- Delete diagrams
+- View creation timestamps
+
+### Environment Variables Viewer
+Visit `/env.html` to view all environment variables with masked values (last 4 characters hidden).
+
+Features:
+- List all environment variables
+- Masked values for security (last 4 chars hidden)
+- Search/filter variables
+- Flags for empty/undefined values
+
+### PlantUML Encoder Tool
+Visit `/plantuml.html` to learn about the MCP PlantUML encoder tool, syntax rules, and example usage.
+
+## Netlify Blobs Configuration
+
+The diagram storage uses Netlify Blobs with hardened configuration support:
+
+### Automatic Configuration (Recommended)
+When running via `netlify dev` or in Netlify Functions, the environment variables are automatically provided:
+- `NETLIFY_SITE_ID` - Your site ID
+- `NETLIFY_BLOBS_TOKEN` or `NETLIFY_AUTH_TOKEN` - Authentication token
+
+### Manual Configuration
+You can also provide explicit options when calling `getDiagramsStore()`:
+
+```typescript
+const store = getDiagramsStore({
+  siteID: 'your-site-id',
+  token: 'your-token'
+});
+```
+
+### Error Handling
+If required environment variables are missing, you'll receive a detailed error with:
+- Which variables are present/missing
+- The source of each variable (explicit or env)
+- Specific guidance on how to fix the issue
+
+Example error response:
+```json
+{
+  "code": "MISSING_BLOBS_ENVIRONMENT",
+  "message": "Netlify Blobs configuration is incomplete...",
+  "details": {
+    "siteID": {
+      "present": false,
+      "envKey": "NETLIFY_SITE_ID"
+    },
+    "token": {
+      "present": false,
+      "envKey": "NETLIFY_BLOBS_TOKEN"
+    },
+    "guidance": [
+      "Set NETLIFY_SITE_ID environment variable or pass siteID option",
+      "Set NETLIFY_BLOBS_TOKEN or NETLIFY_AUTH_TOKEN environment variable or pass token option",
+      "For local development: netlify dev automatically provides these variables",
+      "For production: these are automatically set in Netlify Functions",
+      "For explicit configuration: call getDiagramsStore({ siteID, token })"
+    ]
+  }
+}
+```
+
 ## Available MCP Tools
+
+### Store Diagram Tool
+Store PlantUML diagrams in Netlify Blobs with a label/key.
+
+#### Parameters
+- `label` (string): Label/key to identify the diagram
+- `plantumlCode` (string): PlantUML diagram code to store
+- `url` (string, optional): Encoded PlantUML URL
+
+#### Example
+```json
+{
+  "tool": "store-diagram",
+  "arguments": {
+    "label": "my-architecture",
+    "plantumlCode": "@startuml\nA -> B: Hello\n@enduml",
+    "url": "https://uml.planttext.com/plantuml/svg/..."
+  }
+}
+```
+
+### Get Diagram by Label Tool
+Retrieve a stored PlantUML diagram by its label.
+
+#### Parameters
+- `label` (string): Label/key of the diagram to retrieve
+
+#### Example
+```json
+{
+  "tool": "get-diagram-by-label",
+  "arguments": {
+    "label": "my-architecture"
+  }
+}
+```
+
+Response:
+```json
+{
+  "status": "success",
+  "diagram": {
+    "label": "my-architecture",
+    "plantumlCode": "@startuml\nA -> B: Hello\n@enduml",
+    "url": "https://uml.planttext.com/plantuml/svg/...",
+    "createdAt": "2025-02-07T18:30:00.000Z"
+  }
+}
+```
 
 ### PlantUML Encoder Tool
 
