@@ -290,9 +290,9 @@
                 </div>
               </div>
               <div class="diagram-actions">
-                <button onclick="togglePreview('${labelAttr}')">Show/Hide[togglePreview(${labelAttr})][togglePreview('${labelAttr}')]</button>
+                <button onclick="togglePreview('${safeLabel}')">Show/Hide[togglePreview(${labelAttr})][togglePreview('${safeLabel}')]</button>
                 ${diagram.url ? `<button onclick="window.open('${diagram.url}', '_blank')">Open URL</button>` : ''}
-                <button class="danger" onclick="deleteDiagram('${labelAttr}')">Delete</button>
+                <button class="danger" onclick="deleteDiagram('${safeLabel}')">Delete</button>
               </div>
             </div>
             ${diagram.url ? `
