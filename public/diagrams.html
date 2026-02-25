@@ -270,7 +270,7 @@
 
         diagramsContainer.innerHTML = data.diagrams.map(diagram => {
           const safeLabel = escapeHtml(diagram.label);
-          const labelJson = JSON.stringify(diagram.label);
+          const labelAttr = escapeHtml(JSON.stringify(diagram.label));
           const previewId = `preview-${encodeURIComponent(diagram.label)}`;
 
           return `
@@ -278,7 +278,7 @@
             <div class="diagram-header">
               <div class="diagram-label-container">
                 <div class="diagram-label">${safeLabel}</div>
-                <button class="copy-btn" onclick="copyLabel(${labelJson}, this)" title="Copy label">
+                <button class="copy-btn" onclick="copyLabel(${labelAttr}, this)" title="Copy label">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
@@ -290,9 +290,9 @@
                 </div>
               </div>
               <div class="diagram-actions">
-                <button onclick="togglePreview(${labelJson})">Show/Hide</button>
+                <button onclick="togglePreview(${labelAttr})">Show/Hide</button>
                 ${diagram.url ? `<button onclick="window.open('${diagram.url}', '_blank')">Open URL</button>` : ''}
-                <button class="danger" onclick="deleteDiagram(${labelJson})">Delete</button>
+                <button class="danger" onclick="deleteDiagram(${labelAttr})">Delete</button>
               </div>
             </div>
             ${diagram.url ? `
