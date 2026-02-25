@@ -100,12 +100,12 @@
       flex-direction: row;
     }
     .diagram-source {
-      flex: 0 0 300px;
+      flex: 1 0;
       background: #152a52;
       border: 1px solid #2b4a85;
       border-radius: 4px;
       padding: 15px;
-      overflow: auto;
+      width: fit-content;
     }
     .diagram-source h4 {
       margin: 0 0 10px 0;
@@ -119,7 +119,6 @@
       color: #f5f7ff;
       white-space: pre-wrap;
       word-break: break-all;
-      max-height: 400px;
       overflow-y: auto;
     }
     .diagram-iframe-container {
@@ -127,7 +126,6 @@
       min-width: 0;
     }
     .diagram-preview iframe {
-      width: 100%;
       min-height: 400px;
       border: 1px solid #2b4a85;
       border-radius: 4px;
@@ -170,7 +168,6 @@
       }
       .diagram-source {
         flex: 1;
-        max-height: 200px;
       }
       .diagram-header {
         flex-direction: column;
