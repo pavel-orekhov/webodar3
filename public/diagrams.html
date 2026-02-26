@@ -5,28 +5,64 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Diagrams - webodar3</title>
   <meta name="description" content="View stored PlantUML diagrams">
-  <link rel="preload" href="https://example-styles.netlify.app/fonts/PacaembuVar-latin.woff2" as="font" type="font/woff2" />
-  <link rel="preload" href="https://example-styles.netlify.app/fonts/MulishVar-latin.woff2" as="font" type="font/woff2" />
-  <link rel="stylesheet" href="https://example-styles.netlify.app/styles.css">
+  <link rel="preload" href="/assets/fonts/PacaembuVar-latin.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+  <link rel="preload" href="/assets/fonts/MulishVar-latin.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+  <link rel="stylesheet" href="/assets/css/styles.css">
   <style>
     .diagram-item {
-      border: 1px solid #ddd;
+      border: 1px solid #2b4a85;
       padding: 15px;
       margin-bottom: 15px;
       border-radius: 8px;
-      background: #f9f9f9;
+      background: #20386b;
+      color: #f5f7ff;
     }
     .diagram-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .diagram-label-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
     }
     .diagram-label {
       font-weight: bold;
       font-size: 1.2em;
       word-break: break-all;
-      overflow-wrap: anywhere;
+      color: #f5f7ff;
+      user-select: all;
+      -webkit-user-select: all;
+    }
+    .copy-btn {
+      padding: 4px 8px;
+      cursor: pointer;
+      border: 1px solid #2b4a85;
+      background: #1a2f5a;
+      border-radius: 4px;
+      color: #f5f7ff;
+      font-size: 0.85em;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+    .copy-btn:hover {
+      background: #2b4a85;
+    }
+    .copy-btn.copied {
+      background: #2d5a3d;
+      border-color: #4caf50;
+    }
+    .copy-btn svg {
+      width: 14px;
+      height: 14px;
     }
     .diagram-actions {
       display: flex;
@@ -35,19 +71,21 @@
     .diagram-actions button {
       padding: 5px 10px;
       cursor: pointer;
-      border: 1px solid #333;
-      background: white;
+      border: 1px solid #2b4a85;
+      background: #1a2f5a;
       border-radius: 4px;
+      color: #f5f7ff;
     }
     .diagram-actions button:hover {
-      background: #f0f0f0;
+      background: #2b4a85;
     }
     .diagram-actions button.danger {
-      color: #d73a49;
-      border-color: #d73a49;
+      color: #ffb3b3;
+      border-color: #8b3a3a;
+      background: #4a1f2b;
     }
     .diagram-actions button.danger:hover {
-      background: #ffeef0;
+      background: #5a2f3b;
     }
     .diagram-preview {
       margin-top: 10px;
@@ -56,21 +94,51 @@
     .diagram-preview.expanded {
       display: block;
     }
-    .diagram-preview iframe {
-      width: 100%;
-      min-height: 400px;
-      border: 1px solid #ddd;
+    .diagram-preview-content {
+      display: flex;
+      gap: 15px;
+      flex-direction: row;
+    }
+    .diagram-source {
+      flex: 1 0;
+      background: #152a52;
+      border: 1px solid #2b4a85;
       border-radius: 4px;
+      padding: 15px;
+      width: fit-content;
+    }
+    .diagram-source h4 {
+      margin: 0 0 10px 0;
+      color: #8ab4ff;
+      font-size: 0.95em;
+    }
+    .diagram-source pre {
+      margin: 0;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85em;
+      color: #f5f7ff;
+      white-space: pre-wrap;
+      word-break: break-all;
+      overflow-y: auto;
+    }
+    .diagram-iframe-container {
+      flex: 1;
+      min-width: 0;
+    }
+    .diagram-preview iframe {
+      min-height: 400px;
+      border: 1px solid #2b4a85;
+      border-radius: 4px;
+      background: white;
     }
     .diagram-meta {
       font-size: 0.9em;
-      color: #666;
-      margin-top: 5px;
+      color: #b3c6f5;
     }
     .error-message {
-      color: #d73a49;
+      color: #ffb3b3;
       padding: 10px;
-      background: #ffeef0;
+      background: #4a1f2b;
       border-radius: 4px;
       margin-bottom: 15px;
     }
@@ -94,6 +162,18 @@
       align-items: center;
       margin-bottom: 20px;
     }
+    @media (max-width: 768px) {
+      .diagram-preview-content {
+        flex-direction: column;
+      }
+      .diagram-source {
+        flex: 1;
+      }
+      .diagram-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
   </style>
 </head>
 
@@ -101,7 +181,7 @@
   <header>
     <nav>
       <a href="https://www.netlify.com/">
-        <img src="https://example-styles.netlify.app/images/logo-netlify-small-monochrome-darkmode.svg" class="nf-logo" alt="Netlify">
+        <img src="/assets/images/logo-netlify-small-monochrome-darkmode.svg" class="nf-logo" alt="Netlify">
       </a>
     </nav>
     <section>
@@ -111,7 +191,7 @@
   </header>
   <hr>
   <main>
-    <section>
+    <section style="max-width: 95%">
       <div class="top-actions">
         <a href="/" class="nav-link">← Back to Home</a>
         <a href="/env.html" class="nav-link">View Environment Variables →</a>
@@ -122,15 +202,37 @@
     </section>
   </main>
   <footer>
-    <div>
-      <a href="https://www.netlify.com/"><img src="https://example-styles.netlify.app/images/logo-netlify-small-monochrome-lightmode.svg" class="nf-logo" alt="Netlify logo"></a>
-    </div>
-    <small>
-      <div>© 2025 Netlify</div>
-    </small>
   </footer>
 
   <script>
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    async function copyLabel(label, button) {
+      try {
+        await navigator.clipboard.writeText(label);
+        const originalText = button.innerHTML;
+        button.classList.add('copied');
+        button.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          Copied!
+        `;
+        setTimeout(() => {
+          button.classList.remove('copied');
+          button.innerHTML = originalText;
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy:', err);
+        alert('Failed to copy label to clipboard');
+      }
+    }
+
     async function loadDiagrams() {
       const loadingEl = document.getElementById('loading');
       const errorContainer = document.getElementById('error-container');
@@ -157,26 +259,47 @@
           return;
         }
 
-        diagramsContainer.innerHTML = data.diagrams.map(diagram => `
-          <div class="diagram-item" data-label="${diagram.label}">
+        diagramsContainer.innerHTML = data.diagrams.map(diagram => {
+          const safeLabel = escapeHtml(diagram.label);
+          const previewId = `preview-${encodeURIComponent(diagram.label)}`;
+
+          return `
+          <div class="diagram-item" data-label="${safeLabel}">
             <div class="diagram-header">
-              <div class="diagram-label">${diagram.label}</div>
+              <div class="diagram-label-container">
+                <div class="diagram-label">${safeLabel}</div>
+                <button class="copy-btn" onclick="copyLabel('${safeLabel}', this)" title="Copy label">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  Copy
+                </button>
+                <div class="diagram-meta">
+                  Created: ${new Date(diagram.createdAt).toLocaleString()}
+                </div>
+              </div>
               <div class="diagram-actions">
-                <button onclick="togglePreview('${diagram.label}')">Show/Hide</button>
+                <button onclick="togglePreview('${safeLabel}')">Show/Hide</button>
                 ${diagram.url ? `<button onclick="window.open('${diagram.url}', '_blank')">Open URL</button>` : ''}
-                <button class="danger" onclick="deleteDiagram('${diagram.label}')">Delete</button>
+                <button class="danger" onclick="deleteDiagram('${safeLabel}')">Delete</button>
               </div>
             </div>
-            <div class="diagram-meta">
-              Created: ${new Date(diagram.createdAt).toLocaleString()}
-            </div>
             ${diagram.url ? `
-              <div class="diagram-preview" id="preview-${diagram.label}">
-                <iframe src="${diagram.url}" frameborder="0"></iframe>
+              <div class="diagram-preview" id="${previewId}">
+                <div class="diagram-preview-content">
+                  <div class="diagram-source">
+                    <pre>${escapeHtml(diagram.plantumlCode || 'No source code available')}</pre>
+                  </div>
+                  <div class="diagram-iframe-container">
+                    <iframe src="${diagram.url}" frameborder="0"></iframe>
+                  </div>
+                </div>
               </div>
             ` : '<p>No preview URL available</p>'}
           </div>
-        `).join('');
+        `;
+        }).join('');
 
       } catch (error) {
         loadingEl.style.display = 'none';
@@ -189,7 +312,7 @@
     }
 
     function togglePreview(label) {
-      const preview = document.getElementById(`preview-${label}`);
+      const preview = document.getElementById(`preview-${encodeURIComponent(label)}`);
       if (preview) {
         preview.classList.toggle('expanded');
       }
@@ -207,8 +330,14 @@
         const data = await response.json();
 
         if (data.status === 'success') {
-          document.querySelector(`[data-label="${label}"]`).remove();
-          
+          const escapedLabel = window.CSS && CSS.escape
+            ? CSS.escape(label)
+            : label.replace(/["\\]/g, '\\$&');
+          const item = document.querySelector(`[data-label="${escapedLabel}"]`);
+          if (item) {
+            item.remove();
+          }
+
           if (document.querySelectorAll('.diagram-item').length === 0) {
             document.getElementById('diagrams-container').innerHTML = '<p>No diagrams stored yet.</p>';
           }
