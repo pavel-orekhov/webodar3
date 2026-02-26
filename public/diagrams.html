@@ -20,15 +20,39 @@
     .diagram-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
       margin-bottom: 10px;
-      flex-wrap: wrap;
-      gap: 10px;
+      gap: 15px;
+    }
+    .diagram-left-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .diagram-left-actions button {
+      padding: 5px 10px;
+      cursor: pointer;
+      border: 1px solid #2b4a85;
+      background: #1a2f5a;
+      border-radius: 4px;
+      color: #f5f7ff;
+      white-space: nowrap;
+    }
+    .diagram-left-actions button:hover {
+      background: #2b4a85;
+    }
+    .diagram-label-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      flex: 1;
+      min-width: 0;
     }
     .diagram-label-container {
       display: flex;
-      flex-direction: column;
-      gap: 10px;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
       flex: 1;
       min-width: 0;
     }
@@ -266,21 +290,25 @@
           return `
           <div class="diagram-item" data-label="${safeLabel}">
             <div class="diagram-header">
-              <div class="diagram-label-container">
-                <div class="diagram-label">${safeLabel}</div>
-                <button class="copy-btn" onclick="copyLabel('${safeLabel}', this)" title="Copy label">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                  </svg>
-                  Copy
-                </button>
+              <div class="diagram-left-actions">
+                <button onclick="togglePreview('${safeLabel}')">Show/Hide</button>
+              </div>
+              <div class="diagram-label-group">
+                <div class="diagram-label-container">
+                  <div class="diagram-label">${safeLabel}</div>
+                  <button class="copy-btn" onclick="copyLabel('${safeLabel}', this)" title="Copy label">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    Copy
+                  </button>
+                </div>
                 <div class="diagram-meta">
                   Created: ${new Date(diagram.createdAt).toLocaleString()}
                 </div>
               </div>
               <div class="diagram-actions">
-                <button onclick="togglePreview('${safeLabel}')">Show/Hide</button>
                 ${diagram.url ? `<button onclick="window.open('${diagram.url}', '_blank')">Open URL</button>` : ''}
                 <button class="danger" onclick="deleteDiagram('${safeLabel}')">Delete</button>
               </div>
