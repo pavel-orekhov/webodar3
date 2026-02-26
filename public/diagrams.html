@@ -144,12 +144,13 @@
       word-break: break-all;
       overflow-y: auto;
     }
-    .diagram-iframe-container {
+    .diagram-image-container {
       flex: 1;
       min-width: 0;
     }
-    .diagram-preview iframe {
-      min-height: 400px;
+    .diagram-preview img.diagram-svg {
+      max-width: 100%;
+      height: auto;
       border: 1px solid #2b4a85;
       border-radius: 4px;
       background: white;
@@ -322,8 +323,8 @@
                   <div class="diagram-source">
                     <pre>${escapeHtml(diagram.plantumlCode || 'No source code available')}</pre>
                   </div>
-                  <div class="diagram-iframe-container">
-                    <iframe src="${diagram.url}" frameborder="0"></iframe>
+                  <div class="diagram-image-container">
+                    <img src="${diagram.url}" alt="PlantUML Diagram" class="diagram-svg" loading="lazy" />
                   </div>
                 </div>
               </div>
