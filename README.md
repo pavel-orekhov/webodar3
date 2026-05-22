@@ -35,9 +35,6 @@ Features:
 - Delete diagrams
 - View creation timestamps
 
-### Environment Variables Viewer
-Visit `/env.html` to view all environment variables with masked values (last 4 characters hidden).
-
 Features:
 - List all environment variables
 - Masked values for security (last 4 chars hidden)
@@ -202,25 +199,6 @@ On error:
   "message": "error_description"
 }
 ```
-
-#### PlantUML Syntax Rules
-The tool enforces strict syntax rules for compatibility and readability:
-
-1. **@startuml must be nameless**
-   - ❌ WRONG: `@startuml cto_architecture` or `@startumlcto_architecture`
-   - ✅ CORRECT: `@startuml` (keyword only)
-
-2. **Class names must use camelCase**
-   - ❌ WRONG: `class query-docs` (no hyphens allowed)
-   - ✅ CORRECT: `class queryDocs` (use camelCase)
-
-These rules are enforced by the tool and will return `INVALID_SYNTAX` error if violated.
-
-#### Error codes
-- `EMPTY_CODE`: PlantUML code is required and cannot be empty
-- `CODE_TOO_LARGE`: PlantUML code exceeds maximum size of 50KB
-- `INVALID_SYNTAX`: Violates strict syntax rules
-- `ENCODING_FAILED`: Failed to encode PlantUML diagram
 
 #### Example usage via MCP client
 
